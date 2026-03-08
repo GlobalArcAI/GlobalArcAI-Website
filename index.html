@@ -82,7 +82,7 @@
       position: fixed;
       top: 0; left: 0; right: 0;
       z-index: 500;
-      padding: 0.3em 2em 0.3em 0;
+      padding: 0.3em 2em;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -1292,14 +1292,13 @@
       display: block;
       pointer-events: none;
       filter: brightness(0) invert(1) drop-shadow(0 0 3em rgba(0,255,65,0.4));
-      margin-bottom: 0.1em;
+      margin-bottom: 0.4em;
     }
     .intro-sub {
       display: flex;
       flex-direction: column;
-      align-items: flex-start;
+      align-items: center;
       gap: 0.8em;
-      margin-left: 14vw;
     }
     @keyframes introFadeIn {
       from { opacity: 0; transform: translateY(1.2em); }
@@ -1583,10 +1582,10 @@
       .nav-links { display: none; }
       #nav-hamburger { display: flex; }
       #nav { padding: 0.6em 1.2em; }
-      .nav-logo img { height: 280px !important; max-height: 280px !important; max-width: 380px !important; }
+      .nav-logo img { height: 140px !important; max-height: 140px !important; max-width: 280px !important; }
 
       /* Hero */
-      .hero { padding: 1.5em; padding-top: 300px; }
+      .hero { padding: 1.5em; padding-top: 160px; }
       .hero-content {
         grid-template-columns: 1fr;
         gap: 2em;
@@ -1716,8 +1715,8 @@
   <nav id="nav">
     <a href="index.html" class="nav-logo">
       <img src="https://images.squarespace-cdn.com/content/v1/69813201daddd4685f5aa193/4d1510db-de6f-4293-beb1-f3de89c83a89/ChatGPT+Image+Feb+10%2C+2026%2C+11_27_50+AM.png"
-           height="280" alt="Global Arc AI"
-           style="object-fit:contain; display:block; max-width:380px; max-height:280px; filter: brightness(0) invert(1);">
+           height="140" alt="Global Arc AI"
+           style="object-fit:contain; display:block; max-width:280px; max-height:140px; filter: brightness(0) invert(1);">
     </a>
     <div class="nav-links" id="nav-links">
       <!-- Services dropdown -->
