@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Our Process | Global Arc AI</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --size-container: clamp(992px, 100vw, 5200px);
+      --size-font: calc(var(--size-container) / 120);
+      --black:#161616;--silver:#f1f1f1;--grey:#a2a2a2;--gd:#3c3a3e;--gm:#7b7a7c;--white:#ffffff;--orange:#ff6436;
+      --fh:Impact,"Arial Narrow",sans-serif;--fp:Arial,sans-serif;--fe:"IBM Plex Mono",monospace;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{font-size:var(--size-font);-webkit-font-smoothing:antialiased;scrollbar-width:none;}
+    body{font-family:var(--fp);color:var(--gd);background:var(--silver);line-height:1.3;font-weight:500;letter-spacing:-0.01em;}
+    #nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:0.3em 2em;display:flex;align-items:center;justify-content:space-between;background:rgba(22,22,22,0.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.07);}
+    .nav-logo img{height:200px;max-height:200px;object-fit:contain;display:block;max-width:880px;filter:brightness(0) invert(1);}
+    .nav-links{display:flex;gap:2em;align-items:center;}
+    .nav-links a{font-family:var(--fe);font-size:0.72em;color:rgba(255,255,255,0.55);text-decoration:none;text-transform:uppercase;letter-spacing:0.08em;transition:color 0.2s;}
+    .nav-links a:hover{color:var(--white);}
+    .nav-cta{color:var(--black)!important;background:var(--white);padding:0.55em 1.2em;border-radius:2em;}
+    .nav-cta:hover{background:var(--orange)!important;color:var(--white)!important;}
+    .nav-item{position:relative;display:flex;align-items:center;}
+    .nav-item>a{display:flex;align-items:center;gap:0.3em;}
+    .nav-arrow{font-size:0.85em;opacity:0.5;transition:transform 0.2s;display:inline-block;}
+    .nav-item:hover .nav-arrow{transform:rotate(90deg);opacity:1;}
+    .dropdown{position:absolute;top:100%;left:50%;transform:translateX(-50%) translateY(0.3em);min-width:14em;padding-top:0.8em;opacity:0;visibility:hidden;pointer-events:none;transition:opacity 0.18s,transform 0.18s,visibility 0.18s;z-index:600;}
+    .dropdown-inner{background:rgba(18,18,18,0.97);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.08);border-radius:0.6em;padding:0.4em 0;position:relative;}
+    .nav-item:hover .dropdown{opacity:1;visibility:visible;pointer-events:all;transform:translateX(-50%) translateY(0);}
+    .dropdown-inner a{display:flex;align-items:center;gap:0.75em;padding:0.75em 1.2em;font-family:var(--fe);font-size:0.7em;color:rgba(255,255,255,0.55);text-decoration:none;text-transform:uppercase;letter-spacing:0.08em;transition:color 0.15s,background 0.15s;border-radius:0.3em;margin:0.1em 0.3em;}
+    .dropdown-inner a:hover{color:var(--white);background:rgba(255,255,255,0.05);}
+    .dd-dot{width:0.35em;height:0.35em;border-radius:50%;background:var(--orange);flex-shrink:0;}
+    .page-hero{background:var(--black);padding:12em 2em 5em;}
+    .page-eyebrow{font-family:var(--fe);font-size:0.72em;color:var(--orange);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:1em;}
+    .page-heading{font-family:var(--fh);font-size:7em;font-weight:900;line-height:0.82;color:var(--white);text-transform:uppercase;letter-spacing:-0.01em;margin-bottom:0.5em;}
+    .page-sub{font-family:var(--fp);font-size:1.375em;color:var(--grey);max-width:30em;line-height:1.4;}
+
+    .steps{padding:0 2em 8em;}
+    .step{display:grid;grid-template-columns:auto 1fr 1fr;gap:3em;align-items:start;padding:4em 0;border-bottom:1px solid rgba(162,162,162,0.2);}
+    .step:last-child{border-bottom:none;}
+    .step-num{font-family:var(--fh);font-size:6em;font-weight:900;line-height:1;color:rgba(22,22,22,0.08);letter-spacing:-0.02em;min-width:2em;text-align:right;}
+    .step-left{}
+    .step-title{font-family:var(--fh);font-size:4em;font-weight:900;text-transform:uppercase;color:var(--black);letter-spacing:-0.01em;line-height:0.9;margin-bottom:0.5em;}
+    .step-tag{display:inline-flex;align-items:center;gap:0.4em;font-family:var(--fe);font-size:0.65em;color:var(--orange);text-transform:uppercase;letter-spacing:0.1em;border:1px solid rgba(255,100,54,0.3);padding:0.3em 0.75em;border-radius:2em;}
+    .step-body{font-size:1.2em;line-height:1.55;color:var(--gd);max-width:30em;}
+    .step-body p{margin-bottom:0.75em;}
+
+    .cta-band{background:var(--orange);padding:5em 2em;display:flex;align-items:center;justify-content:space-between;gap:4em;}
+    .cta-h{font-family:var(--fh);font-size:5em;font-weight:900;line-height:0.82;color:var(--white);text-transform:uppercase;letter-spacing:-0.01em;}
+    .cta-btn{font-family:var(--fe);font-size:0.8em;color:var(--orange);background:var(--white);padding:0.9em 2em;border-radius:2em;text-decoration:none;letter-spacing:0.06em;text-transform:uppercase;font-weight:500;flex-shrink:0;}
+    footer{background:var(--black);padding:2em;display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(255,255,255,0.07);}
+    .footer-logo img{height:56px;object-fit:contain;display:block;max-width:260px;}
+    .footer-copy{font-family:var(--fe);font-size:0.68em;color:var(--gm);text-transform:uppercase;letter-spacing:0.06em;}
+  </style>
+</head>
+<body>
+  <nav id="nav">
+    <a href="index.html" class="nav-logo">
+      <img src="https://images.squarespace-cdn.com/content/v1/69813201daddd4685f5aa193/4d1510db-de6f-4293-beb1-f3de89c83a89/ChatGPT+Image+Feb+10%2C+2026%2C+11_27_50+AM.png" alt="Global Arc AI">
+    </a>
+    <div class="nav-links">
+      <div class="nav-item">
+        <a href="index.html#services">Services <span class="nav-arrow">›</span></a>
+        <div class="dropdown">
+          <div class="dropdown-inner">
+            <a href="automate.html"><span class="dd-dot"></span>Automate</a>
+            <a href="integrate.html"><span class="dd-dot"></span>Integrate</a>
+            <a href="deploy.html"><span class="dd-dot"></span>Deploy</a>
+          </div>
+        </div>
+      </div>
+      <a href="process.html">Process</a>
+      <a href="about.html">About</a>
+      <a href="index.html#contact" class="nav-cta">Get started</a>
+    </div>
+  </nav>
+
+  <div class="page-hero">
+    <div class="page-eyebrow">How we work</div>
+    <h1 class="page-heading">Our Process.</h1>
+    <p class="page-sub">Every engagement follows the same four-stage framework, because great automation starts with understanding your business inside out.</p>
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-left">
+        <div class="step-title">Discover</div>
+        <div class="step-tag">Strategy</div>
+      </div>
+      <div class="step-body">
+        <p>We start by mapping your entire operation, your tools, your team, your customer journey, and where time is being lost. We ask the questions most consultants skip.</p>
+        <p>No assumptions. No templates. Just a clear picture of how your business actually works, and where automation can make the biggest difference.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-left">
+        <div class="step-title">Design</div>
+        <div class="step-tag">Architecture</div>
+      </div>
+      <div class="step-body">
+        <p>With a full understanding of your operation, we design a bespoke automation architecture. Every workflow is tailored to your services, your tone, your hours, and your way of doing business.</p>
+        <p>You review and approve everything before a single line is written.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-left">
+        <div class="step-title">Develop</div>
+        <div class="step-tag">Engineering</div>
+      </div>
+      <div class="step-body">
+        <p>We build your AI systems from scratch, custom integrations, intelligent workflows, and automated processes that connect all your tools and data.</p>
+        <p>No off-the-shelf software. No generic solutions. Everything is purpose-built for your exact requirements.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">04</div>
+      <div class="step-left">
+        <div class="step-title">Deliver</div>
+        <div class="step-tag">Launch</div>
+      </div>
+      <div class="step-body">
+        <p>We test everything rigorously, deploy live, and stay close through the launch period to ensure everything performs as expected.</p>
+        <p>After launch, we provide ongoing monitoring, optimisation, and support, because the best automation systems get better over time.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="cta-band">
+    <h2 class="cta-h">Ready to get started?</h2>
+    <a href="index.html#contact" class="cta-btn">Book a discovery call</a>
+  </div>
+
+  <footer>
+    <div class="footer-logo">
+      <img src="https://images.squarespace-cdn.com/content/v1/69813201daddd4685f5aa193/4d1510db-de6f-4293-beb1-f3de89c83a89/ChatGPT+Image+Feb+10%2C+2026%2C+11_27_50+AM.png" alt="Global Arc AI">
+    </div>
+    <div class="footer-copy">© 2026 Global Arc AI</div>
+  </footer>
+</body>
+</html>

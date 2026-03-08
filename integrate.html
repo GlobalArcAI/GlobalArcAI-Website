@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Automate | Global Arc AI</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <style>
+    :root {
+      --size-container: clamp(992px, 100vw, 5200px);
+      --size-font: calc(var(--size-container) / 120);
+      --black:#161616;--silver:#f1f1f1;--grey:#a2a2a2;--gd:#3c3a3e;--gm:#7b7a7c;--white:#ffffff;--orange:#ff6436;
+      --fh:Impact,"Arial Narrow",sans-serif;--fp:Arial,sans-serif;--fe:"IBM Plex Mono",monospace;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{font-size:var(--size-font);-webkit-font-smoothing:antialiased;scrollbar-width:none;}
+    body{font-family:var(--fp);color:var(--gd);background:var(--silver);line-height:1.3;font-weight:500;letter-spacing:-0.01em;}
+    #nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:0.3em 2em;display:flex;align-items:center;justify-content:space-between;background:rgba(22,22,22,0.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.07);}
+    .nav-logo img{height:200px;max-height:200px;object-fit:contain;display:block;max-width:880px;filter:brightness(0) invert(1);}
+    .nav-links{display:flex;gap:2em;align-items:center;}
+    .nav-links a{font-family:var(--fe);font-size:0.72em;color:rgba(255,255,255,0.55);text-decoration:none;text-transform:uppercase;letter-spacing:0.08em;transition:color 0.2s;}
+    .nav-links a:hover{color:var(--white);}
+    .nav-cta{color:var(--black)!important;background:var(--white);padding:0.55em 1.2em;border-radius:2em;transition:background 0.2s,color 0.2s!important;}
+    .nav-cta:hover{background:var(--orange)!important;color:var(--white)!important;}
+    .nav-item{position:relative;display:flex;align-items:center;}
+    .nav-item>a{display:flex;align-items:center;gap:0.3em;}
+    .nav-arrow{font-size:0.85em;opacity:0.5;transition:transform 0.2s;display:inline-block;}
+    .nav-item:hover .nav-arrow{transform:rotate(90deg);opacity:1;}
+    .dropdown{position:absolute;top:100%;left:50%;transform:translateX(-50%) translateY(0.3em);min-width:14em;padding-top:0.8em;opacity:0;visibility:hidden;pointer-events:none;transition:opacity 0.18s,transform 0.18s,visibility 0.18s;z-index:600;}
+    .dropdown-inner{background:rgba(18,18,18,0.97);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.08);border-radius:0.6em;padding:0.4em 0;position:relative;}
+    .nav-item:hover .dropdown{opacity:1;visibility:visible;pointer-events:all;transform:translateX(-50%) translateY(0);}
+    .dropdown-inner a{display:flex;align-items:center;gap:0.75em;padding:0.75em 1.2em;font-family:var(--fe);font-size:0.7em;color:rgba(255,255,255,0.55);text-decoration:none;text-transform:uppercase;letter-spacing:0.08em;transition:color 0.15s,background 0.15s;border-radius:0.3em;margin:0.1em 0.3em;}
+    .dropdown-inner a:hover{color:var(--white);background:rgba(255,255,255,0.05);}
+    .dd-dot{width:0.35em;height:0.35em;border-radius:50%;background:var(--orange);flex-shrink:0;}
+
+    .page-hero{background:var(--black);padding:12em 2em 5em;position:relative;overflow:hidden;}
+    .page-eyebrow{font-family:var(--fe);font-size:0.72em;color:var(--orange);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:1em;}
+    .page-heading{font-family:var(--fh);font-size:7em;font-weight:900;line-height:0.82;color:var(--white);text-transform:uppercase;letter-spacing:-0.01em;margin-bottom:0.5em;}
+    .page-sub{font-family:var(--fp);font-size:1.375em;color:var(--grey);max-width:28em;line-height:1.4;}
+
+    .content{padding:6em 2em;max-width:1400px;margin:0 auto;}
+    .two-col{display:grid;grid-template-columns:1fr 1fr;gap:5em;align-items:start;margin-bottom:6em;}
+    .content-h{font-family:var(--fh);font-size:3em;font-weight:900;text-transform:uppercase;color:var(--black);letter-spacing:-0.01em;line-height:0.9;margin-bottom:0.75em;}
+    .content-body{font-size:1.2em;line-height:1.5;color:var(--gd);max-width:28em;}
+    .content-body p{margin-bottom:1em;}
+    .feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5em;margin-bottom:6em;}
+    .feature-card{background:var(--black);border-radius:1em;padding:2em;display:flex;flex-direction:column;gap:1em;}
+    .feature-icon{width:2.5em;height:2.5em;background:rgba(255,100,54,0.15);border-radius:0.5em;display:flex;align-items:center;justify-content:center;}
+    .feature-title{font-family:var(--fh);font-size:1.5em;font-weight:900;text-transform:uppercase;color:var(--white);letter-spacing:-0.01em;}
+    .feature-desc{font-family:var(--fe);font-size:0.68em;color:var(--grey);line-height:1.6;letter-spacing:0.02em;}
+
+    footer{background:var(--black);padding:2em;display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(255,255,255,0.07);}
+    .footer-logo img{height:56px;object-fit:contain;display:block;max-width:260px;}
+    .footer-copy{font-family:var(--fe);font-size:0.68em;color:var(--gm);text-transform:uppercase;letter-spacing:0.06em;}
+  </style>
+</head>
+<body>
+  <nav id="nav">
+    <a href="index.html" class="nav-logo">
+      <img src="https://images.squarespace-cdn.com/content/v1/69813201daddd4685f5aa193/4d1510db-de6f-4293-beb1-f3de89c83a89/ChatGPT+Image+Feb+10%2C+2026%2C+11_27_50+AM.png" alt="Global Arc AI">
+    </a>
+    <div class="nav-links">
+      <div class="nav-item">
+        <a href="index.html#services">Services <span class="nav-arrow">›</span></a>
+        <div class="dropdown">
+          <div class="dropdown-inner">
+            <a href="automate.html"><span class="dd-dot"></span>Automate</a>
+            <a href="integrate.html"><span class="dd-dot"></span>Integrate</a>
+            <a href="deploy.html"><span class="dd-dot"></span>Deploy</a>
+          </div>
+        </div>
+      </div>
+      <a href="process.html">Process</a>
+      <a href="about.html">About</a>
+      <a href="index.html#contact" class="nav-cta">Get started</a>
+    </div>
+  </nav>
+
+  <div class="page-hero">
+    <div class="page-eyebrow">Service 02</div>
+    <h1 class="page-heading">Integrate.</h1>
+    <p class="page-sub">Seamlessly connect your existing tools, CRMs, and platforms with intelligent AI pipelines.</p>
+  </div>
+
+  <div class="content">
+    <div class="two-col">
+      <div>
+        <h2 class="content-h">What we connect</h2>
+        <div class="content-body">
+          <p>We map your entire software ecosystem, your CRM, calendar, communication tools, and more, and build intelligent bridges between them.</p>
+          <p>No more switching between apps or manually copying data. Everything talks to everything.</p>
+        </div>
+      </div>
+      <div>
+        <h2 class="content-h">The result</h2>
+        <div class="content-body">
+          <p>A single unified system where data flows automatically between your tools, your team, and your customers.</p>
+          <p>Eliminate data silos, reduce errors from manual data entry, and get a real-time view of your entire business.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="#ff6436" stroke-width="1.5"/><path d="M7 10l2 2 4-4" stroke="#ff6436" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="feature-title">Lead Capture</div>
+        <div class="feature-desc">Automatically capture, qualify, and route inbound leads 24/7 without manual intervention.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="5" width="14" height="10" rx="2" stroke="#ff6436" stroke-width="1.5"/><path d="M7 9h6M7 12h4" stroke="#ff6436" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <div class="feature-title">Follow-Up Sequences</div>
+        <div class="feature-desc">Automated multi-step follow-up workflows that nurture prospects until they're ready to buy.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 16V8l6-4 6 4v8" stroke="#ff6436" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="7" y="12" width="6" height="4" rx="1" stroke="#ff6436" stroke-width="1.5"/></svg>
+        </div>
+        <div class="feature-title">Internal Operations</div>
+        <div class="feature-desc">Automate reports, approvals, notifications, and data entry so your team focuses on high-value work.</div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-logo">
+      <img src="https://images.squarespace-cdn.com/content/v1/69813201daddd4685f5aa193/4d1510db-de6f-4293-beb1-f3de89c83a89/ChatGPT+Image+Feb+10%2C+2026%2C+11_27_50+AM.png" alt="Global Arc AI">
+    </div>
+    <div class="footer-copy">© 2026 Global Arc AI</div>
+  </footer>
+</body>
+</html>
