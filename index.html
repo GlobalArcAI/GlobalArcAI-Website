@@ -1277,13 +1277,14 @@
     .intro-inner {
       position: relative;
       z-index: 1;
-      text-align: center;
+      text-align: left;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      gap: 0.8em;
+      align-items: flex-start;
+      gap: 0;
       left: 0;
-      top: 3vh;
+      top: 0;
+      padding-left: 8vw;
       animation: introFadeIn 1s ease 2.2s both;
     }
     .intro-logo {
@@ -1588,7 +1589,7 @@
       .nav-logo img { height: 200px !important; max-height: 200px !important; max-width: 880px !important; }
 
       /* Hero */
-      .hero { padding: 1.5em; }
+      .hero { padding: 1.5em; padding-top: 220px; }
       .hero-content {
         grid-template-columns: 1fr;
         gap: 2em;
@@ -1719,7 +1720,7 @@
     <a href="index.html" class="nav-logo">
       <img src="https://images.squarespace-cdn.com/content/v1/69813201daddd4685f5aa193/4d1510db-de6f-4293-beb1-f3de89c83a89/ChatGPT+Image+Feb+10%2C+2026%2C+11_27_50+AM.png"
            height="200" alt="Global Arc AI"
-           style="object-fit:contain; display:block; max-width:880px; max-height:200px; filter: brightness(0) invert(1);">
+           style="object-fit:contain; display:block; max-width:280px; max-height:200px; filter: brightness(0) invert(1);">
     </a>
     <div class="nav-links" id="nav-links">
       <!-- Services dropdown -->
