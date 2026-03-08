@@ -1288,11 +1288,11 @@
       height: min(52vh, 38em);
       max-width: 90vw;
       object-fit: contain;
-      object-position: center center;
+      object-position: center bottom;
       display: block;
       pointer-events: none;
       filter: brightness(0) invert(1) drop-shadow(0 0 3em rgba(0,255,65,0.4));
-      margin-bottom: 0.05em;
+      margin-bottom: 0;
     }
     .intro-sub {
       display: flex;
@@ -1674,7 +1674,8 @@
       /* Intro logo +40% */
       .intro-logo {
         height: min(49vh, 28em);
-        margin-bottom: 0.05em;
+        object-position: center bottom;
+        margin-bottom: 0;
       }
       .intro-heading { font-size: 2.8em; }
 
