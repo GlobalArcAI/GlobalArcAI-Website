@@ -89,7 +89,7 @@
       transition: transform 0.35s cubic-bezier(0.4,0,0.2,1),
                   background 0.3s;
     }
-    #nav.scrolled { background: rgba(22,22,22,0.85); backdrop-filter: blur(12px); }
+    #nav.scrolled { background: transparent; backdrop-filter: none; }
     #nav.hidden   { transform: translateY(-100%); }
 
     .nav-logo {
@@ -1294,8 +1294,14 @@
       display: block;
       pointer-events: none;
       filter: brightness(0) invert(1) drop-shadow(0 0 3em rgba(0,255,65,0.4));
-      margin-bottom: -10em;
-      transform: translateX(-2vw);
+      margin-bottom: 1.2em;
+    }
+    .intro-sub {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.8em;
+      padding-left: 3em;
     }
     @keyframes introFadeIn {
       from { opacity: 0; transform: translateY(1.2em); }
@@ -1579,7 +1585,7 @@
       .nav-links { display: none; }
       #nav-hamburger { display: flex; }
       #nav { padding: 0.6em 1.2em; }
-      .nav-logo img { height: 36px !important; max-height: 36px !important; max-width: 150px !important; }
+      .nav-logo img { height: 200px !important; max-height: 200px !important; max-width: 880px !important; }
 
       /* Hero */
       .hero { padding: 1.5em; }
@@ -1589,7 +1595,8 @@
         padding-bottom: 3em;
         min-height: auto;
       }
-      .hero-right { display: none; }
+      .hero-right { display: flex; }
+      .hero-visual { height: 34em; }
       .hero-line { font-size: 3.8em; }
       .hero-cta-link { align-self: stretch; justify-content: center; }
 
@@ -1669,7 +1676,7 @@
       /* Intro logo +40% */
       .intro-logo {
         height: min(49vh, 28em);
-        margin-bottom: -5em;
+        margin-bottom: 1em;
       }
       .intro-heading { font-size: 2.8em; }
 
@@ -1695,9 +1702,11 @@
     <div class="intro-inner">
       <img src="https://images.squarespace-cdn.com/content/v1/69813201daddd4685f5aa193/4d1510db-de6f-4293-beb1-f3de89c83a89/ChatGPT+Image+Feb+10%2C+2026%2C+11_27_50+AM.png"
            alt="Global Arc AI" class="intro-logo">
-      <div class="intro-label">Initialising AI systems</div>
-      <button class="intro-btn" id="intro-btn">Start your AI journey</button>
-      <button class="intro-skip" id="intro-skip">Skip intro</button>
+      <div class="intro-sub">
+        <div class="intro-label">Initialising AI systems</div>
+        <button class="intro-btn" id="intro-btn">Start your AI journey</button>
+        <button class="intro-skip" id="intro-skip">Skip intro</button>
+      </div>
     </div>
   </div>
 
@@ -1736,10 +1745,10 @@
   <div id="mobile-nav" onclick="toggleMobileNav()">
     <div id="mobile-nav-inner" onclick="event.stopPropagation()">
       <a href="#" onclick="toggleMobileServices(event)" style="display:flex;justify-content:space-between;align-items:center;">Services <span id="mob-svc-arrow" style="font-size:1.2em;transition:transform 0.2s;">›</span></a>
-      <div id="mob-svc-sub" style="display:none;padding-left:1em;border-left:2px solid rgba(0,255,65,0.3);">
-        <a href="automate.html">Automate</a>
-        <a href="integrate.html">Integrate</a>
-        <a href="deploy.html">Deploy</a>
+      <div id="mob-svc-sub" style="display:none;margin-top:0.3em;">
+        <a href="automate.html" style="padding-left:2em;border-left:3px solid rgba(0,255,65,0.4);margin-bottom:0.2em;display:block;">Automate</a>
+        <a href="integrate.html" style="padding-left:2em;border-left:3px solid rgba(0,255,65,0.4);margin-bottom:0.2em;display:block;">Integrate</a>
+        <a href="deploy.html" style="padding-left:2em;border-left:3px solid rgba(0,255,65,0.4);display:block;">Deploy</a>
       </div>
       <a href="process.html" onclick="toggleMobileNav()">Process</a>
       <a href="about.html">About</a>
