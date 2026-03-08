@@ -1266,8 +1266,7 @@
       align-items: center;
       justify-content: center;
       overflow: hidden;
-      transition: transform 1.4s cubic-bezier(0.4, 0, 0.8, 1), opacity 0.9s ease 0.4s;
-      transform-origin: center center;
+      transition: opacity 1.2s ease 0.5s;
     }
     #matrix-canvas {
       position: absolute;
@@ -1354,13 +1353,12 @@
     }
     .intro-skip:hover { color: rgba(255,255,255,0.5); }
     #intro-overlay.hiding {
-      transform: scale(8);
       opacity: 0;
       pointer-events: none;
     }
     #intro-overlay.hiding .intro-inner {
       opacity: 0;
-      transition: opacity 0.12s ease;
+      transition: opacity 0.25s ease;
     }
 
     /* ═══ FEATURE SPOTLIGHT ═══ */
@@ -1581,6 +1579,7 @@
       .nav-links { display: none; }
       #nav-hamburger { display: flex; }
       #nav { padding: 0.6em 1.2em; }
+      .nav-logo img { height: 36px !important; max-height: 36px !important; max-width: 150px !important; }
 
       /* Hero */
       .hero { padding: 1.5em; }
@@ -1667,12 +1666,17 @@
       #chat-launcher { bottom: 1.2em; right: 1.2em; }
       #chat-box { width: calc(100vw - 2.4em); right: -1.2em; bottom: 5em; }
 
-      /* Intro logo */
+      /* Intro logo +40% */
       .intro-logo {
-        height: min(35vh, 20em);
+        height: min(49vh, 28em);
         margin-bottom: -5em;
       }
       .intro-heading { font-size: 2.8em; }
+
+      /* Better visibility */
+      .feature-pill-desc { font-size: 0.88em !important; color: rgba(255,255,255,0.72) !important; }
+      .feature-spot-sub  { color: rgba(255,255,255,0.72) !important; }
+      .marquee-item      { color: rgba(255,255,255,0.7) !important; font-size: 0.88em !important; }
     }
 
     @media (max-width: 500px) {
@@ -1731,10 +1735,12 @@
   <!-- Mobile nav overlay -->
   <div id="mobile-nav" onclick="toggleMobileNav()">
     <div id="mobile-nav-inner" onclick="event.stopPropagation()">
-      <a href="#services" onclick="toggleMobileNav()">Services</a>
-      <a href="automate.html">Automate</a>
-      <a href="integrate.html">Integrate</a>
-      <a href="deploy.html">Deploy</a>
+      <a href="#" onclick="toggleMobileServices(event)" style="display:flex;justify-content:space-between;align-items:center;">Services <span id="mob-svc-arrow" style="font-size:1.2em;transition:transform 0.2s;">›</span></a>
+      <div id="mob-svc-sub" style="display:none;padding-left:1em;border-left:2px solid rgba(0,255,65,0.3);">
+        <a href="automate.html">Automate</a>
+        <a href="integrate.html">Integrate</a>
+        <a href="deploy.html">Deploy</a>
+      </div>
       <a href="process.html" onclick="toggleMobileNav()">Process</a>
       <a href="about.html">About</a>
       <a href="#contact" class="mobile-nav-cta" onclick="toggleMobileNav()">Get started</a>
@@ -1927,8 +1933,8 @@
   <!-- FEATURE SPOTLIGHT: Quotes, Invoices & Google Reviews -->
   <section class="feature-spot" id="feature-spot">
     <div class="feature-spot-eyebrow reveal">Our signature service</div>
-    <h2 class="feature-spot-heading reveal">WIN MORE.<br>CHASE <span>LESS</span>.</h2>
-    <p class="feature-spot-sub reveal">Your most time-consuming admin, quoting, invoicing, and chasing Google reviews, handled automatically. From the moment a job is done, your AI goes to work.</p>
+    <h2 class="feature-spot-heading reveal">ONE AI.<br>RUNS IT <span>ALL</span>.</h2>
+    <p class="feature-spot-sub reveal">Your all-in-one AI business assistant — handling quotes, invoices, review requests, job management, voice automation, and 24/7 customer enquiries. One system built entirely around how you work.</p>
     <div class="feature-pills">
 
       <div class="feature-pill reveal">
@@ -1976,12 +1982,97 @@
           </svg>
         </div>
         <div class="feature-pill-title">Google<br>Review SMS</div>
-        <div class="feature-pill-desc">A perfectly-timed SMS lands on your customer's phone right after their job, a friendly nudge with a direct link to leave you a 5-star Google review.</div>
+        <div class="feature-pill-desc">A perfectly-timed SMS lands on your customer's phone right after their job — a friendly nudge with a direct link to leave you a 5-star Google review.</div>
         <div class="feature-pill-stat">3× more
           <div class="feature-pill-stat-label">Google reviews collected</div>
         </div>
       </div>
 
+      <div class="feature-pill reveal" style="transition-delay:0.36s">
+        <div class="feature-pill-num">04</div>
+        <div class="feature-pill-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#ff6436" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+            <line x1="8" y1="14" x2="16" y2="14"/>
+            <line x1="8" y1="18" x2="12" y2="18"/>
+          </svg>
+        </div>
+        <div class="feature-pill-title">Job<br>Management</div>
+        <div class="feature-pill-desc">Your AI tracks every job from booking to completion — updating schedules, notifying customers, logging outcomes, and keeping your team organised without any manual input.</div>
+        <div class="feature-pill-stat">Zero
+          <div class="feature-pill-stat-label">Jobs falling through the cracks</div>
+        </div>
+      </div>
+
+      <div class="feature-pill reveal" style="transition-delay:0.48s">
+        <div class="feature-pill-num">05</div>
+        <div class="feature-pill-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#ff6436" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+            <line x1="12" y1="19" x2="12" y2="23"/>
+            <line x1="8" y1="23" x2="16" y2="23"/>
+          </svg>
+        </div>
+        <div class="feature-pill-title">Voice<br>Automation</div>
+        <div class="feature-pill-desc">AI that answers calls, qualifies enquiries, books appointments, and handles routine customer questions — all by voice, 24/7, with no phone tag and no missed calls.</div>
+        <div class="feature-pill-stat">24/7
+          <div class="feature-pill-stat-label">Call handling, no staff needed</div>
+        </div>
+      </div>
+
+      <div class="feature-pill reveal" style="transition-delay:0.6s">
+        <div class="feature-pill-num">06</div>
+        <div class="feature-pill-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#ff6436" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+          </svg>
+        </div>
+        <div class="feature-pill-title">24/7 AI<br>Assistant</div>
+        <div class="feature-pill-desc">One intelligent assistant that ties everything together — responding to enquiries, updating your systems, chasing payments, and keeping your business running around the clock, every day of the year.</div>
+        <div class="feature-pill-stat">Always on
+          <div class="feature-pill-stat-label">No downtime, no days off</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section class="process" id="process">
+    <div class="process-top">
+      <h2 class="process-heading reveal">YOUR 4-STAGE SETUP</h2>
+      <p class="process-desc reveal">We don't drop in a generic system. Every automation we build is tailored to your business from day one.</p>
+    </div>
+    <div class="process-grid">
+      <div class="step process-step">
+        <div class="step-num">01</div>
+        <div class="step-title">Discover</div>
+        <p class="step-body">We map your systems, bottlenecks, and workflows, understanding exactly where automation creates real value.</p>
+        <div class="step-tag">Strategy</div>
+      </div>
+      <div class="step process-step">
+        <div class="step-num">02</div>
+        <div class="step-title">Design</div>
+        <p class="step-body">A bespoke automation strategy built around your business: your services, your tone, your way of working.</p>
+        <div class="step-tag">Architecture</div>
+      </div>
+      <div class="step process-step">
+        <div class="step-num">03</div>
+        <div class="step-title">Develop</div>
+        <p class="step-body">We build and install your AI systems, integrations, and workflows. Custom-built from scratch, every time.</p>
+        <div class="step-tag">Engineering</div>
+      </div>
+      <div class="step process-step">
+        <div class="step-num">04</div>
+        <div class="step-title">Deliver</div>
+        <p class="step-body">We test, refine, and go live. Then stay close, monitoring, adjusting, and improving as your business grows.</p>
+        <div class="step-tag">Launch</div>
+      </div>
     </div>
   </section>
 
@@ -2177,40 +2268,6 @@
         </div>
       </div>
 
-    </div>
-  </section>
-
-  <!-- PROCESS -->
-  <section class="process" id="process">
-    <div class="process-top">
-      <h2 class="process-heading reveal">YOUR 4-STAGE SETUP</h2>
-      <p class="process-desc reveal">We don't drop in a generic system. Every automation we build is tailored to your business from day one.</p>
-    </div>
-    <div class="process-grid">
-      <div class="step process-step">
-        <div class="step-num">01</div>
-        <div class="step-title">Discover</div>
-        <p class="step-body">We map your systems, bottlenecks, and workflows, understanding exactly where automation creates real value.</p>
-        <div class="step-tag">Strategy</div>
-      </div>
-      <div class="step process-step">
-        <div class="step-num">02</div>
-        <div class="step-title">Design</div>
-        <p class="step-body">A bespoke automation strategy built around your business: your services, your tone, your way of working.</p>
-        <div class="step-tag">Architecture</div>
-      </div>
-      <div class="step process-step">
-        <div class="step-num">03</div>
-        <div class="step-title">Develop</div>
-        <p class="step-body">We build and install your AI systems, integrations, and workflows. Custom-built from scratch, every time.</p>
-        <div class="step-tag">Engineering</div>
-      </div>
-      <div class="step process-step">
-        <div class="step-num">04</div>
-        <div class="step-title">Deliver</div>
-        <p class="step-body">We test, refine, and go live. Then stay close, monitoring, adjusting, and improving as your business grows.</p>
-        <div class="step-tag">Launch</div>
-      </div>
     </div>
   </section>
 
@@ -2513,7 +2570,7 @@
       const ctx     = canvas.getContext('2d');
       const CHARS   = '01アイウエカキクGLOBALARCAI0110100111001101011010010110010101100111'.split('');
       const FS      = 14;
-      let W, H, drops, animId;
+      let W, H, drops, animId, speed = 1;
 
       function resize() {
         W = canvas.width  = window.innerWidth;
@@ -2534,7 +2591,7 @@
           ctx.fillStyle = Math.random() > 0.94 ? '#ffffff' : (Math.random() > 0.7 ? '#00ff41' : '#00cc33');
           ctx.fillText(ch, i * FS, y);
           if (y > H && Math.random() > 0.975) drops[i] = Math.floor(Math.random() * -30);
-          drops[i]++;
+          drops[i] += speed;
         }
         animId = requestAnimationFrame(drawMatrix);
       }
@@ -2546,13 +2603,18 @@
 
       function dismiss() {
         sessionStorage.setItem('introSeen', '1');
-        overlay.classList.add('hiding');
         document.body.style.overflow = '';
-        /* keep canvas drawing during the slide-up so it looks seamless */
+        /* Intensify rain immediately */
+        speed = 4;
+        /* Fade out inner content */
+        var inner = overlay.querySelector('.intro-inner');
+        if (inner) { inner.style.transition = 'opacity 0.3s ease'; inner.style.opacity = '0'; }
+        /* After rain burst, fade the whole overlay */
+        setTimeout(function() { overlay.classList.add('hiding'); }, 600);
         setTimeout(function() {
           cancelAnimationFrame(animId);
           if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
-        }, 1700);
+        }, 2000);
       }
 
       var introBtn  = document.getElementById('intro-btn');
@@ -2982,6 +3044,14 @@
       const btn = document.getElementById('nav-hamburger');
       nav.classList.toggle('open');
       btn.classList.toggle('open');
+    }
+    function toggleMobileServices(e) {
+      e.preventDefault();
+      var sub   = document.getElementById('mob-svc-sub');
+      var arrow = document.getElementById('mob-svc-arrow');
+      var open  = sub.style.display !== 'none';
+      sub.style.display  = open ? 'none' : 'block';
+      arrow.style.transform = open ? '' : 'rotate(90deg)';
     }
 
     // Contact form submission
