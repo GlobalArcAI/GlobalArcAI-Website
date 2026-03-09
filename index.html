@@ -87,7 +87,10 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      pointer-events: none;
     }
+    #nav > * { pointer-events: auto; }
+    .dropdown { pointer-events: auto; }
 
     .nav-logo {
       display: flex;
@@ -1516,7 +1519,7 @@
       position: fixed;
       inset: 0;
       background: rgba(0,0,0,0.6);
-      z-index: 510;
+      z-index: 490;
       backdrop-filter: blur(4px);
     }
     #mobile-nav.open { display: flex; align-items: flex-start; justify-content: flex-end; }
