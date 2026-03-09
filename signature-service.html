@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Signature Service | Global Arc AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black:  #161616;
+      --green:  #00ff41;
+      --white:  #ffffff;
+      --grey:   #a2a2a2;
+      --orange: #ff6436;
+      --fh: Impact, "Arial Narrow", sans-serif;
+      --fe: "IBM Plex Mono", monospace;
+      --fp: Arial, sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+    body { background: var(--black); color: var(--white); font-family: var(--fp); line-height: 1.5; }
+
+    /* ── NAV ── */
+    #nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 2.5rem;
+      background: rgba(22,22,22,0.9); backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .nav-logo { font-family: var(--fh); font-size: 1.1rem; letter-spacing: 0.08em; color: var(--white); text-decoration: none; }
+    .nav-logo span { color: var(--green); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { font-family: var(--fe); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.6); text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--green); }
+    .nav-cta { font-family: var(--fe); font-size: 0.65rem; letter-spacing: 0.08em; text-transform: uppercase; color: #000; background: var(--green); padding: 0.55rem 1.3rem; border-radius: 2rem; text-decoration: none; transition: opacity 0.2s; }
+    .nav-cta:hover { opacity: 0.85; }
+
+    /* ── PAGE HERO ── */
+    .page-hero {
+      padding: 10rem 2.5rem 5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      max-width: 900px;
+    }
+    .page-eyebrow {
+      font-family: var(--fe); font-size: 0.7rem; letter-spacing: 0.25em;
+      color: var(--green); text-transform: uppercase; margin-bottom: 1.2rem;
+    }
+    .page-title {
+      font-family: var(--fh); font-size: clamp(3rem, 6vw, 5.5rem);
+      font-weight: 900; line-height: 0.88; text-transform: uppercase;
+      letter-spacing: -0.02em; color: var(--white); margin-bottom: 1.5rem;
+    }
+    .page-title span { color: var(--green); }
+    .page-intro {
+      font-family: var(--fe); font-size: 0.95rem; color: rgba(255,255,255,0.55);
+      line-height: 1.75; max-width: 620px; letter-spacing: 0.02em;
+    }
+
+    /* ── ANCHOR NAV ── */
+    .anchor-nav {
+      display: flex; flex-wrap: wrap; gap: 0.6rem;
+      padding: 2rem 2.5rem; border-bottom: 1px solid rgba(255,255,255,0.07);
+      position: sticky; top: 64px; z-index: 50;
+      background: rgba(22,22,22,0.95); backdrop-filter: blur(12px);
+    }
+    .anchor-nav a {
+      font-family: var(--fe); font-size: 0.62rem; letter-spacing: 0.1em;
+      text-transform: uppercase; color: rgba(255,255,255,0.5);
+      text-decoration: none; padding: 0.4rem 0.9rem;
+      border: 1px solid rgba(255,255,255,0.12); border-radius: 2rem;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .anchor-nav a:hover { color: var(--green); border-color: var(--green); }
+
+    /* ── DETAIL SECTION ── */
+    .detail-section {
+      padding: 6rem 2.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      max-width: 1100px;
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: 4rem;
+      align-items: start;
+    }
+    .detail-left { position: sticky; top: 140px; }
+    .detail-num {
+      font-family: var(--fh); font-size: 6rem; font-weight: 900;
+      color: rgba(0,255,65,0.08); line-height: 1; margin-bottom: 0.5rem;
+      letter-spacing: -0.04em;
+    }
+    .detail-tag {
+      font-family: var(--fe); font-size: 0.62rem; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--green); margin-bottom: 1rem;
+    }
+    .detail-title {
+      font-family: var(--fh); font-size: clamp(2rem, 3.5vw, 3.2rem);
+      font-weight: 900; line-height: 0.9; text-transform: uppercase;
+      letter-spacing: -0.015em; color: var(--white); margin-bottom: 1.5rem;
+    }
+    .detail-stat-box {
+      margin-top: 2rem; padding: 1.5rem;
+      border: 1px solid rgba(0,255,65,0.18);
+      border-radius: 0.75rem;
+      background: rgba(0,255,65,0.03);
+    }
+    .detail-stat-val {
+      font-family: var(--fh); font-size: 3rem; color: var(--green);
+      font-weight: 900; line-height: 1;
+    }
+    .detail-stat-label { font-family: var(--fe); font-size: 0.65rem; color: rgba(255,255,255,0.45); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 0.4rem; }
+    .detail-right p {
+      font-size: 1rem; color: rgba(255,255,255,0.7); line-height: 1.75;
+      margin-bottom: 1.4rem;
+    }
+
+    /* ── HOW IT WORKS ── */
+    .how-title {
+      font-family: var(--fe); font-size: 0.65rem; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--orange); margin: 2.5rem 0 1.2rem;
+    }
+    .steps { display: flex; flex-direction: column; gap: 1rem; }
+    .step-item {
+      display: flex; gap: 1.2rem; align-items: flex-start;
+      padding: 1.2rem; background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07); border-radius: 0.6rem;
+    }
+    .step-n {
+      font-family: var(--fh); font-size: 1.4rem; color: var(--green);
+      font-weight: 900; line-height: 1; flex-shrink: 0; min-width: 1.8rem;
+    }
+    .step-text strong { display: block; font-family: var(--fe); font-size: 0.75rem; color: var(--white); letter-spacing: 0.06em; margin-bottom: 0.3rem; }
+    .step-text span { font-size: 0.88rem; color: rgba(255,255,255,0.55); line-height: 1.6; }
+
+    /* ── BENEFITS ── */
+    .benefits {
+      margin-top: 2rem; display: flex; flex-direction: column; gap: 0.6rem;
+    }
+    .benefit {
+      display: flex; align-items: flex-start; gap: 0.8rem;
+      font-size: 0.9rem; color: rgba(255,255,255,0.65); line-height: 1.5;
+    }
+    .benefit::before { content: '→'; color: var(--green); flex-shrink: 0; font-family: var(--fe); }
+
+    /* ── CTA SECTION ── */
+    .page-cta {
+      padding: 6rem 2.5rem;
+      text-align: center;
+      border-top: 1px solid rgba(255,255,255,0.07);
+    }
+    .page-cta-eyebrow {
+      font-family: var(--fe); font-size: 0.7rem; letter-spacing: 0.2em;
+      color: var(--green); text-transform: uppercase; margin-bottom: 1rem;
+    }
+    .page-cta-heading {
+      font-family: var(--fh); font-size: clamp(2.5rem, 5vw, 4.5rem);
+      font-weight: 900; text-transform: uppercase; color: var(--white);
+      letter-spacing: -0.02em; margin-bottom: 1.5rem;
+    }
+    .page-cta-btn {
+      display: inline-flex; align-items: center; gap: 0.6em;
+      background: var(--green); color: #000; padding: 0.85rem 2.5rem;
+      border-radius: 2rem; font-family: var(--fe); font-size: 0.75rem;
+      letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .page-cta-btn:hover { opacity: 0.88; transform: scale(1.03); }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 2rem 2.5rem; border-top: 1px solid rgba(255,255,255,0.07);
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 1rem;
+    }
+    footer p { font-family: var(--fe); font-size: 0.65rem; color: rgba(255,255,255,0.3); letter-spacing: 0.08em; }
+    footer a { font-family: var(--fe); font-size: 0.65rem; color: rgba(255,255,255,0.3); text-decoration: none; }
+    footer a:hover { color: var(--green); }
+
+    @media (max-width: 768px) {
+      #nav { padding: 0.8rem 1.2rem; }
+      .nav-links { display: none; }
+      .page-hero { padding: 7rem 1.5rem 3rem; }
+      .anchor-nav { padding: 1rem 1.5rem; top: 56px; }
+      .detail-section { grid-template-columns: 1fr; gap: 2.5rem; padding: 4rem 1.5rem; }
+      .detail-left { position: static; }
+      .page-cta { padding: 4rem 1.5rem; }
+      footer { padding: 1.5rem 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="nav">
+    <a href="index.html" class="nav-logo">GLOBAL ARC <span>AI</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html#home">Home</a></li>
+      <li><a href="index.html#services">Services</a></li>
+      <li><a href="index.html#custom-ai">Bespoke Builds</a></li>
+      <li><a href="index.html#about">About</a></li>
+    </ul>
+    <a href="index.html#contact" class="nav-cta">Get started →</a>
+  </nav>
+
+  <!-- PAGE HERO -->
+  <div class="page-hero">
+    <p class="page-eyebrow">Our Signature Service</p>
+    <h1 class="page-title">ONE AI.<br>RUNS IT <span>ALL</span>.</h1>
+    <p class="page-intro">Your all-in-one AI business assistant — built entirely around how your business works. From the moment a lead enquires to the moment they leave a 5-star review, every step is handled automatically.</p>
+  </div>
+
+  <!-- ANCHOR NAV -->
+  <nav class="anchor-nav">
+    <a href="#auto-quotes">01 Auto Quotes</a>
+    <a href="#auto-invoices">02 Auto Invoices</a>
+    <a href="#google-reviews">03 Google Reviews</a>
+    <a href="#job-management">04 Job Management</a>
+    <a href="#voice-automation">05 Voice Automation</a>
+    <a href="#ai-assistant">06 24/7 AI Assistant</a>
+  </nav>
+
+  <!-- 01 AUTO QUOTES -->
+  <section class="detail-section" id="auto-quotes">
+    <div class="detail-left">
+      <div class="detail-num">01</div>
+      <div class="detail-tag">Signature Feature</div>
+      <h2 class="detail-title">AUTO<br>QUOTES</h2>
+      <div class="detail-stat-box">
+        <div class="detail-stat-val">&lt; 2 min</div>
+        <div class="detail-stat-label">Quote delivered to lead</div>
+      </div>
+    </div>
+    <div class="detail-right">
+      <p>The moment a lead fills in your enquiry form, sends an email, or messages you on any platform, your AI reads it, understands what they need, and generates a professional, fully branded quote — then sends it before your competitors have even opened their inbox.</p>
+      <p>Every quote is personalised using the customer's details, job type, and your pricing logic. It looks exactly like your branded document, with your logo, your terms, and your pricing structure. No templates, no manual work, no delays.</p>
+      <p>This isn't just speed — it's a competitive edge. Businesses that respond within two minutes are dramatically more likely to win the job. Your AI makes that the standard, every single time.</p>
+
+      <div class="how-title">How it works</div>
+      <div class="steps">
+        <div class="step-item"><span class="step-n">1</span><div class="step-text"><strong>Lead enquiry received</strong><span>Your AI detects a new enquiry across any connected channel — form, email, SMS, or chat.</span></div></div>
+        <div class="step-item"><span class="step-n">2</span><div class="step-text"><strong>Job scope extracted</strong><span>The AI reads the message, extracts the job type, location, size, and any other relevant details using intelligent parsing.</span></div></div>
+        <div class="step-item"><span class="step-n">3</span><div class="step-text"><strong>Quote generated &amp; personalised</strong><span>Using your pricing rules and brand template, a professional quote is built instantly — with the customer's name and job details filled in.</span></div></div>
+        <div class="step-item"><span class="step-n">4</span><div class="step-text"><strong>Sent automatically</strong><span>The quote lands in the customer's inbox within seconds, with a follow-up sequence triggered if they don't respond within 24 hours.</span></div></div>
+      </div>
+
+      <div class="benefits">
+        <div class="benefit">Respond to every lead in under 2 minutes, 24 hours a day</div>
+        <div class="benefit">Branded PDF quotes that look identical to manually created ones</div>
+        <div class="benefit">Pricing logic built around your service tiers and materials</div>
+        <div class="benefit">Automatic follow-up if the customer doesn't open or respond</div>
+        <div class="benefit">Works across email, SMS, web forms, and messaging platforms</div>
+        <div class="benefit">Full audit trail — every quote logged and accessible</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 AUTO INVOICES -->
+  <section class="detail-section" id="auto-invoices">
+    <div class="detail-left">
+      <div class="detail-num">02</div>
+      <div class="detail-tag">Signature Feature</div>
+      <h2 class="detail-title">AUTO<br>INVOICES</h2>
+      <div class="detail-stat-box">
+        <div class="detail-stat-val">100%</div>
+        <div class="detail-stat-label">Invoices sent on time</div>
+      </div>
+    </div>
+    <div class="detail-right">
+      <p>The moment a job is marked complete — whether by your team in your job management system, or triggered by any other signal you define — your AI generates a professional invoice with the correct amounts, client details, and payment instructions, and sends it automatically.</p>
+      <p>No more chasing admin at the end of the day. No more forgotten invoices sitting in a drafts folder. Every completed job is immediately followed by a polished, accurate invoice that gets paid faster because it lands while the job is fresh in the customer's mind.</p>
+      <p>Your invoices are connected to your payment system, making it simple for customers to pay online. Overdue payments trigger automatic reminder sequences — firm but professional — so you get paid without awkward phone calls.</p>
+
+      <div class="how-title">How it works</div>
+      <div class="steps">
+        <div class="step-item"><span class="step-n">1</span><div class="step-text"><strong>Job completion detected</strong><span>Your AI monitors your job management system for completion triggers, or accepts manual signals from your team.</span></div></div>
+        <div class="step-item"><span class="step-n">2</span><div class="step-text"><strong>Invoice auto-populated</strong><span>Correct pricing, VAT, client name, job reference, and payment terms are pulled from your systems and assembled into a branded invoice.</span></div></div>
+        <div class="step-item"><span class="step-n">3</span><div class="step-text"><strong>Sent to client immediately</strong><span>The invoice is sent via email with a payment link. A PDF copy is also filed automatically in your accounting system.</span></div></div>
+        <div class="step-item"><span class="step-n">4</span><div class="step-text"><strong>Reminders if unpaid</strong><span>If the invoice isn't paid by the due date, a polite automated reminder is sent — escalating in tone after further delays.</span></div></div>
+      </div>
+
+      <div class="benefits">
+        <div class="benefit">Every completed job invoiced within minutes, not days</div>
+        <div class="benefit">Correct amounts every time — no manual data entry errors</div>
+        <div class="benefit">Integrates with Xero, QuickBooks, and other accounting platforms</div>
+        <div class="benefit">Automated payment reminders on a schedule you control</div>
+        <div class="benefit">Online payment links included for instant settlement</div>
+        <div class="benefit">Full invoice history synced with your accounting records</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 GOOGLE REVIEWS -->
+  <section class="detail-section" id="google-reviews">
+    <div class="detail-left">
+      <div class="detail-num">03</div>
+      <div class="detail-tag">Signature Feature</div>
+      <h2 class="detail-title">GOOGLE<br>REVIEW SMS</h2>
+      <div class="detail-stat-box">
+        <div class="detail-stat-val">3×</div>
+        <div class="detail-stat-label">More reviews collected</div>
+      </div>
+    </div>
+    <div class="detail-right">
+      <p>A perfectly-timed SMS lands on your customer's phone shortly after their job is complete — a warm, friendly message from your business thanking them for their custom and including a single-tap link to leave you a Google review.</p>
+      <p>The timing is critical. Customers are most likely to leave a review in the 30–90 minutes after a positive experience. Your AI hits that window every single time, automatically, for every customer, without anyone on your team having to remember to ask.</p>
+      <p>More 5-star reviews means higher rankings in local Google search, more trust from new customers, and a compounding advantage over competitors who rely on customers spontaneously leaving reviews. This one feature consistently delivers a measurable increase in new enquiries within weeks of activation.</p>
+
+      <div class="how-title">How it works</div>
+      <div class="steps">
+        <div class="step-item"><span class="step-n">1</span><div class="step-text"><strong>Job marked complete</strong><span>When a job is finished and the invoice is sent, the review sequence is queued automatically.</span></div></div>
+        <div class="step-item"><span class="step-n">2</span><div class="step-text"><strong>Timing window opens</strong><span>The AI waits for your configured delay (typically 45–90 minutes) to ensure the job is fully complete before making contact.</span></div></div>
+        <div class="step-item"><span class="step-n">3</span><div class="step-text"><strong>Personalised SMS sent</strong><span>A warm message using the customer's first name, referencing the job, is sent with a direct link to your Google review page.</span></div></div>
+        <div class="step-item"><span class="step-n">4</span><div class="step-text"><strong>Follow-up if no review</strong><span>If no review is detected after 48 hours, a gentle reminder is sent once — never spammy, always professional.</span></div></div>
+      </div>
+
+      <div class="benefits">
+        <div class="benefit">On average 3× more reviews compared to manual asking</div>
+        <div class="benefit">Personalised messages — never generic or spammy</div>
+        <div class="benefit">Configurable timing to match your job type</div>
+        <div class="benefit">Direct link to your Google Business profile</div>
+        <div class="benefit">Optional one-follow-up sequence for non-responders</div>
+        <div class="benefit">Review volume tracked and reported monthly</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 JOB MANAGEMENT -->
+  <section class="detail-section" id="job-management">
+    <div class="detail-left">
+      <div class="detail-num">04</div>
+      <div class="detail-tag">Signature Feature</div>
+      <h2 class="detail-title">JOB<br>MANAGEMENT</h2>
+      <div class="detail-stat-box">
+        <div class="detail-stat-val">Zero</div>
+        <div class="detail-stat-label">Jobs falling through the cracks</div>
+      </div>
+    </div>
+    <div class="detail-right">
+      <p>From the moment a job is booked to the moment it's complete and invoiced, your AI tracks every step. Schedules are updated, customers are notified of their appointment, engineers are briefed, and outcomes are logged — all automatically.</p>
+      <p>Your team always knows what's next. Customers always know what to expect. And nothing gets lost because a message wasn't passed on, a diary wasn't checked, or someone forgot to update the system at the end of a long day.</p>
+      <p>Every job lives in a single connected system. When a step changes — a rescheduled appointment, a delayed start, a completed stage — the whole chain updates. The right people are notified. The right documents are generated. The right follow-up is queued.</p>
+
+      <div class="how-title">How it works</div>
+      <div class="steps">
+        <div class="step-item"><span class="step-n">1</span><div class="step-text"><strong>Job booked</strong><span>Whether booked by your team or directly by a customer, the job is logged with all relevant details and assigned to the schedule.</span></div></div>
+        <div class="step-item"><span class="step-n">2</span><div class="step-text"><strong>Automatic notifications</strong><span>Confirmation sent to the customer. Team member notified. Calendar blocked. All without a single manual action.</span></div></div>
+        <div class="step-item"><span class="step-n">3</span><div class="step-text"><strong>Day-of reminders</strong><span>Customer receives an SMS reminder the day before and the morning of. Reduces no-shows by up to 60%.</span></div></div>
+        <div class="step-item"><span class="step-n">4</span><div class="step-text"><strong>Completion &amp; follow-up</strong><span>Job marked complete triggers invoice generation, review request, and any post-job actions you've configured.</span></div></div>
+      </div>
+
+      <div class="benefits">
+        <div class="benefit">Full visibility of every job from booking to completion</div>
+        <div class="benefit">Automated customer confirmations and day-before reminders</div>
+        <div class="benefit">Team notifications when jobs are assigned or changed</div>
+        <div class="benefit">No-show rate reduced significantly with smart reminder sequences</div>
+        <div class="benefit">Integrates with your existing calendar and CRM</div>
+        <div class="benefit">Job outcomes logged automatically for reporting</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 VOICE AUTOMATION -->
+  <section class="detail-section" id="voice-automation">
+    <div class="detail-left">
+      <div class="detail-num">05</div>
+      <div class="detail-tag">Signature Feature</div>
+      <h2 class="detail-title">VOICE<br>AUTOMATION</h2>
+      <div class="detail-stat-box">
+        <div class="detail-stat-val">24/7</div>
+        <div class="detail-stat-label">Call handling, no staff needed</div>
+      </div>
+    </div>
+    <div class="detail-right">
+      <p>Your AI answers incoming calls, handles routine customer questions, qualifies new enquiries, and books appointments — all by voice, in natural conversation, 24 hours a day, 7 days a week, with no phone tag and no missed calls.</p>
+      <p>The AI is trained on your specific services, pricing, and FAQs. It sounds professional and natural, never robotic. Callers who ask questions get clear, accurate answers. Callers who want to book get booked. Complex or sensitive calls are routed to a real person.</p>
+      <p>For businesses that rely on the phone — tradespeople, service providers, clinics, consultancies — this is transformative. You stop losing jobs to competitors who picked up first, and your team stops spending half their day answering the same three questions.</p>
+
+      <div class="how-title">How it works</div>
+      <div class="steps">
+        <div class="step-item"><span class="step-n">1</span><div class="step-text"><strong>Call received</strong><span>Your AI answers on the first ring, introduces itself as your business assistant, and begins a natural conversation.</span></div></div>
+        <div class="step-item"><span class="step-n">2</span><div class="step-text"><strong>Intent detected</strong><span>The AI determines whether the caller wants a quote, an appointment, an answer to a question, or needs to speak to someone.</span></div></div>
+        <div class="step-item"><span class="step-n">3</span><div class="step-text"><strong>Action taken</strong><span>Quotes are sent, appointments are booked, questions are answered — all in the call. No callbacks needed for routine requests.</span></div></div>
+        <div class="step-item"><span class="step-n">4</span><div class="step-text"><strong>Human escalation when needed</strong><span>Calls requiring human judgement are transferred or flagged for callback, with a full transcript and summary prepared.</span></div></div>
+      </div>
+
+      <div class="benefits">
+        <div class="benefit">Never miss another call — answered every time, day or night</div>
+        <div class="benefit">Books appointments and sends quotes directly from the call</div>
+        <div class="benefit">Handles FAQs accurately based on your real service information</div>
+        <div class="benefit">Natural, professional voice — not a robotic IVR menu</div>
+        <div class="benefit">Full call transcripts and summaries logged automatically</div>
+        <div class="benefit">Smart escalation to humans for complex or sensitive calls</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 24/7 AI ASSISTANT -->
+  <section class="detail-section" id="ai-assistant">
+    <div class="detail-left">
+      <div class="detail-num">06</div>
+      <div class="detail-tag">Signature Feature</div>
+      <h2 class="detail-title">24/7 AI<br>ASSISTANT</h2>
+      <div class="detail-stat-box">
+        <div class="detail-stat-val">Always</div>
+        <div class="detail-stat-label">On — zero downtime, zero days off</div>
+      </div>
+    </div>
+    <div class="detail-right">
+      <p>The 24/7 AI Assistant is the intelligent core that ties every other feature together. It monitors all your channels — email, SMS, chat, forms, and calls — and takes the right action at the right time, around the clock, without human intervention.</p>
+      <p>New enquiry at 11pm? Responded to and a quote sent. Invoice overdue on a Sunday? Reminder dispatched. Customer asking a question on your website at 3am? Answered correctly and the lead captured. Your business never sleeps and never drops a ball.</p>
+      <p>The assistant learns your business. The more it operates, the better it understands your customers' patterns, your most common questions, and your most valuable lead sources. It becomes a continuously improving engine for your business growth.</p>
+
+      <div class="how-title">How it works</div>
+      <div class="steps">
+        <div class="step-item"><span class="step-n">1</span><div class="step-text"><strong>All channels monitored</strong><span>Email, SMS, web chat, forms, and calls are all watched simultaneously. Nothing is missed regardless of the time or day.</span></div></div>
+        <div class="step-item"><span class="step-n">2</span><div class="step-text"><strong>Intent understood</strong><span>Every incoming message is read and classified. Enquiry, complaint, question, booking request — the AI knows what's needed.</span></div></div>
+        <div class="step-item"><span class="step-n">3</span><div class="step-text"><strong>Action executed</strong><span>The appropriate response, quote, booking, or internal alert is triggered automatically based on your configured workflows.</span></div></div>
+        <div class="step-item"><span class="step-n">4</span><div class="step-text"><strong>You stay informed</strong><span>A daily summary lands in your inbox each morning — every interaction, every action taken, every lead captured overnight.</span></div></div>
+      </div>
+
+      <div class="benefits">
+        <div class="benefit">One intelligent system across all your customer-facing channels</div>
+        <div class="benefit">Instant response to every enquiry, 24 hours a day, 365 days a year</div>
+        <div class="benefit">Daily morning summary of overnight activity and actions taken</div>
+        <div class="benefit">Continuously learns and improves based on your real conversations</div>
+        <div class="benefit">Fully configurable — you set the rules, the AI follows them</div>
+        <div class="benefit">Human escalation protocols for anything that requires your attention</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="page-cta">
+    <p class="page-cta-eyebrow">Ready to get started?</p>
+    <h2 class="page-cta-heading">YOUR BUSINESS,<br>AUTOMATED.</h2>
+    <a href="index.html#contact" class="page-cta-btn">Book a free discovery call →</a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2025 Global Arc AI. All rights reserved.</p>
+    <a href="index.html">← Back to home</a>
+  </footer>
+
+</body>
+</html>

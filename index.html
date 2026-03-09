@@ -7,6 +7,7 @@
   <title>Global Arc AI | Bespoke AI Automation</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <style>
@@ -1807,6 +1808,7 @@
         <div class="feature-pill-stat">&lt; 2 min
           <div class="feature-pill-stat-label">Quote delivered to lead</div>
         </div>
+        <a href="signature-service.html#auto-quotes" class="feature-pill-link">Learn more →</a>
       </div>
 
       <div class="feature-pill reveal" style="transition-delay:0.12s">
@@ -1824,6 +1826,7 @@
         <div class="feature-pill-stat">100%
           <div class="feature-pill-stat-label">Invoices sent on time</div>
         </div>
+        <a href="signature-service.html#auto-invoices" class="feature-pill-link">Learn more →</a>
       </div>
 
       <div class="feature-pill reveal" style="transition-delay:0.24s">
@@ -1841,6 +1844,7 @@
         <div class="feature-pill-stat">3× more
           <div class="feature-pill-stat-label">Google reviews collected</div>
         </div>
+        <a href="signature-service.html#google-reviews" class="feature-pill-link">Learn more →</a>
       </div>
 
       <div class="feature-pill reveal" style="transition-delay:0.36s">
@@ -1860,6 +1864,7 @@
         <div class="feature-pill-stat">Zero
           <div class="feature-pill-stat-label">Jobs falling through the cracks</div>
         </div>
+        <a href="signature-service.html#job-management" class="feature-pill-link">Learn more →</a>
       </div>
 
       <div class="feature-pill reveal" style="transition-delay:0.48s">
@@ -1877,6 +1882,7 @@
         <div class="feature-pill-stat">24/7
           <div class="feature-pill-stat-label">Call handling, no staff needed</div>
         </div>
+        <a href="signature-service.html#voice-automation" class="feature-pill-link">Learn more →</a>
       </div>
 
       <div class="feature-pill reveal" style="transition-delay:0.6s">
@@ -1892,6 +1898,7 @@
         <div class="feature-pill-stat">Always on
           <div class="feature-pill-stat-label">No downtime, no days off</div>
         </div>
+        <a href="signature-service.html#ai-assistant" class="feature-pill-link">Learn more →</a>
       </div>
 
     </div>
@@ -2037,6 +2044,7 @@
         <div class="feature-pill-stat">90%
           <div class="feature-pill-stat-label">Queries handled automatically</div>
         </div>
+        <a href="bespoke-builds.html#ai-chatbot" class="feature-pill-link">Learn more →</a>
       </div>
 
       <div class="feature-pill reveal" style="transition-delay:0.12s">
@@ -2054,6 +2062,7 @@
         <div class="feature-pill-stat">5×
           <div class="feature-pill-stat-label">Faster lead-to-conversation</div>
         </div>
+        <a href="bespoke-builds.html#lead-intelligence" class="feature-pill-link">Learn more →</a>
       </div>
 
       <div class="feature-pill reveal" style="transition-delay:0.24s">
@@ -2072,6 +2081,7 @@
         <div class="feature-pill-stat">Zero
           <div class="feature-pill-stat-label">Manual data entry required</div>
         </div>
+        <a href="bespoke-builds.html#document-processing" class="feature-pill-link">Learn more →</a>
       </div>
 
     </div>
@@ -2091,6 +2101,7 @@
         <div class="feature-pill-stat">Daily
           <div class="feature-pill-stat-label">Automated reports delivered</div>
         </div>
+        <a href="bespoke-builds.html#business-intelligence" class="feature-pill-link">Learn more →</a>
       </div>
 
       <div class="feature-pill reveal" style="transition-delay:0.48s">
@@ -2105,6 +2116,7 @@
         <div class="feature-pill-stat">100+
           <div class="feature-pill-stat-label">Trigger conditions supported</div>
         </div>
+        <a href="bespoke-builds.html#workflow-orchestration" class="feature-pill-link">Learn more →</a>
       </div>
 
       <div class="feature-pill reveal" style="transition-delay:0.6s">
@@ -2121,6 +2133,7 @@
         <div class="feature-pill-stat">Weeks
           <div class="feature-pill-stat-label">From brief to live site</div>
         </div>
+        <a href="bespoke-builds.html#web-design" class="feature-pill-link">Learn more →</a>
       </div>
 
     </div>
@@ -2307,122 +2320,65 @@
     /* refresh so all in-viewport elements are correctly evaluated */
     ScrollTrigger.refresh();
 
-    /* ── Hero: AI neural network background ── */
+    /* ── Hero: Three.js torus + starfield ── */
     (function() {
       var canvas = document.getElementById('hero-canvas');
-      var ctx = canvas.getContext('2d');
-      var W, H, nodes;
-      var G = '0,255,65';
-      var NODE_COUNT = 60;
-      var MAX_DIST = 200;
+      var W = canvas.offsetWidth;
+      var H = canvas.offsetHeight;
 
-      function Node() {
-        this.x  = Math.random() * W;
-        this.y  = Math.random() * H;
-        this.r  = Math.random() * 2.2 + 0.8;
-        this.vx = (Math.random() - 0.5) * 0.28;
-        this.vy = (Math.random() - 0.5) * 0.28;
-        this.phase = Math.random() * Math.PI * 2;
+      var scene    = new THREE.Scene();
+      var camera   = new THREE.PerspectiveCamera(60, W / H, 0.1, 2000);
+      camera.position.z = 28;
+
+      var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+      renderer.setSize(W, H, false);
+      renderer.setClearColor(0x000000, 0);
+
+      /* ── Stars ── */
+      var starPos = [];
+      for (var i = 0; i < 5000; i++) {
+        starPos.push(
+          (Math.random() - 0.5) * 1800,
+          (Math.random() - 0.5) * 1800,
+          (Math.random() - 0.5) * 1800
+        );
       }
+      var starGeo = new THREE.BufferGeometry();
+      starGeo.setAttribute('position', new THREE.Float32BufferAttribute(starPos, 3));
+      var starMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.45, transparent: true, opacity: 0.75 });
+      scene.add(new THREE.Points(starGeo, starMat));
 
-      function init() {
-        nodes = [];
-        for (var i = 0; i < NODE_COUNT; i++) nodes.push(new Node());
+      /* ── Torus (wireframe outer) ── */
+      var torusGeo  = new THREE.TorusGeometry(9, 3.2, 22, 120);
+      var torusMat  = new THREE.MeshBasicMaterial({ color: 0x00ff41, wireframe: true, transparent: true, opacity: 0.28 });
+      var torus     = new THREE.Mesh(torusGeo, torusMat);
+      scene.add(torus);
+
+      /* ── Torus (solid inner fill for depth) ── */
+      var torusInner = new THREE.Mesh(
+        new THREE.TorusGeometry(9, 3.2, 22, 120),
+        new THREE.MeshBasicMaterial({ color: 0x002208, transparent: true, opacity: 0.55 })
+      );
+      scene.add(torusInner);
+
+      /* ── Slow rotation ── */
+      function animate() {
+        torus.rotation.x     += 0.0025;
+        torus.rotation.y     += 0.005;
+        torus.rotation.z     += 0.001;
+        torusInner.rotation.copy(torus.rotation);
+        renderer.render(scene, camera);
+        requestAnimationFrame(animate);
       }
+      animate();
 
-      function resize() {
-        W = canvas.width  = canvas.offsetWidth;
-        H = canvas.height = canvas.offsetHeight;
-        init();
-      }
-
-      /* data pulse: bright dot travelling along an edge */
-      var pulses = [];
-      function spawnPulse() {
-        /* pick two connected nodes */
-        var a = nodes[Math.floor(Math.random() * nodes.length)];
-        var b = nodes[Math.floor(Math.random() * nodes.length)];
-        var dx = a.x - b.x, dy = a.y - b.y;
-        if (Math.sqrt(dx*dx + dy*dy) < MAX_DIST) {
-          pulses.push({ a: a, b: b, t: 0, speed: 0.008 + Math.random() * 0.012 });
-        }
-      }
-      setInterval(spawnPulse, 300);
-
-      function draw() {
-        ctx.clearRect(0, 0, W, H);
-
-        /* move nodes */
-        for (var i = 0; i < nodes.length; i++) {
-          var n = nodes[i];
-          n.x += n.vx; n.y += n.vy; n.phase += 0.018;
-          if (n.x < 0)  { n.x = 0;  n.vx *= -1; }
-          if (n.x > W)  { n.x = W;  n.vx *= -1; }
-          if (n.y < 0)  { n.y = 0;  n.vy *= -1; }
-          if (n.y > H)  { n.y = H;  n.vy *= -1; }
-        }
-
-        /* draw edges */
-        for (var i = 0; i < nodes.length; i++) {
-          for (var j = i + 1; j < nodes.length; j++) {
-            var dx = nodes[i].x - nodes[j].x;
-            var dy = nodes[i].y - nodes[j].y;
-            var d  = Math.sqrt(dx*dx + dy*dy);
-            if (d < MAX_DIST) {
-              var a = (1 - d / MAX_DIST) * 0.18;
-              ctx.beginPath();
-              ctx.moveTo(nodes[i].x, nodes[i].y);
-              ctx.lineTo(nodes[j].x, nodes[j].y);
-              ctx.strokeStyle = 'rgba(' + G + ',' + a + ')';
-              ctx.lineWidth = 0.6;
-              ctx.stroke();
-            }
-          }
-        }
-
-        /* draw data pulses */
-        for (var k = pulses.length - 1; k >= 0; k--) {
-          var p = pulses[k];
-          p.t += p.speed;
-          if (p.t >= 1) { pulses.splice(k, 1); continue; }
-          var px = p.a.x + (p.b.x - p.a.x) * p.t;
-          var py = p.a.y + (p.b.y - p.a.y) * p.t;
-          var fade = p.t < 0.15 ? p.t / 0.15 : (p.t > 0.85 ? (1 - p.t) / 0.15 : 1);
-          var grd = ctx.createRadialGradient(px, py, 0, px, py, 8);
-          grd.addColorStop(0, 'rgba(' + G + ',' + (0.9 * fade) + ')');
-          grd.addColorStop(1, 'rgba(' + G + ',0)');
-          ctx.beginPath();
-          ctx.arc(px, py, 8, 0, Math.PI * 2);
-          ctx.fillStyle = grd;
-          ctx.fill();
-        }
-
-        /* draw nodes */
-        for (var i = 0; i < nodes.length; i++) {
-          var n = nodes[i];
-          var pulse = (Math.sin(n.phase) + 1) * 0.5;
-          var alpha = 0.18 + pulse * 0.45;
-          /* glow */
-          var grd = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, n.r * 4);
-          grd.addColorStop(0, 'rgba(' + G + ',' + (alpha * 0.6) + ')');
-          grd.addColorStop(1, 'rgba(' + G + ',0)');
-          ctx.beginPath();
-          ctx.arc(n.x, n.y, n.r * 4, 0, Math.PI * 2);
-          ctx.fillStyle = grd;
-          ctx.fill();
-          /* core */
-          ctx.beginPath();
-          ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
-          ctx.fillStyle = 'rgba(' + G + ',' + alpha + ')';
-          ctx.fill();
-        }
-
-        requestAnimationFrame(draw);
-      }
-
-      resize();
-      draw();
-      window.addEventListener('resize', function() { resize(); });
+      window.addEventListener('resize', function() {
+        W = canvas.offsetWidth;
+        H = canvas.offsetHeight;
+        camera.aspect = W / H;
+        camera.updateProjectionMatrix();
+        renderer.setSize(W, H, false);
+      });
     })();
 
     /* ── Section break heading slide in ── */

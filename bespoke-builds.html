@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bespoke Builds | Global Arc AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black:  #161616;
+      --green:  #00ff41;
+      --white:  #ffffff;
+      --grey:   #a2a2a2;
+      --orange: #ff6436;
+      --fh: Impact, "Arial Narrow", sans-serif;
+      --fe: "IBM Plex Mono", monospace;
+      --fp: Arial, sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+    body { background: var(--black); color: var(--white); font-family: var(--fp); line-height: 1.5; }
+
+    /* ── NAV ── */
+    #nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 2.5rem;
+      background: rgba(22,22,22,0.9); backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .nav-logo { font-family: var(--fh); font-size: 1.1rem; letter-spacing: 0.08em; color: var(--white); text-decoration: none; }
+    .nav-logo span { color: var(--green); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { font-family: var(--fe); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.6); text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--green); }
+    .nav-cta { font-family: var(--fe); font-size: 0.65rem; letter-spacing: 0.08em; text-transform: uppercase; color: #000; background: var(--green); padding: 0.55rem 1.3rem; border-radius: 2rem; text-decoration: none; transition: opacity 0.2s; }
+    .nav-cta:hover { opacity: 0.85; }
+
+    /* ── PAGE HERO ── */
+    .page-hero {
+      padding: 10rem 2.5rem 5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      max-width: 900px;
+    }
+    .page-eyebrow {
+      font-family: var(--fe); font-size: 0.7rem; letter-spacing: 0.25em;
+      color: var(--green); text-transform: uppercase; margin-bottom: 1.2rem;
+    }
+    .page-title {
+      font-family: var(--fh); font-size: clamp(3rem, 6vw, 5.5rem);
+      font-weight: 900; line-height: 0.88; text-transform: uppercase;
+      letter-spacing: -0.02em; color: var(--white); margin-bottom: 1.5rem;
+    }
+    .page-title span { color: var(--green); }
+    .page-intro {
+      font-family: var(--fe); font-size: 0.95rem; color: rgba(255,255,255,0.55);
+      line-height: 1.75; max-width: 620px; letter-spacing: 0.02em;
+    }
+
+    /* ── ANCHOR NAV ── */
+    .anchor-nav {
+      display: flex; flex-wrap: wrap; gap: 0.6rem;
+      padding: 2rem 2.5rem; border-bottom: 1px solid rgba(255,255,255,0.07);
+      position: sticky; top: 64px; z-index: 50;
+      background: rgba(22,22,22,0.95); backdrop-filter: blur(12px);
+    }
+    .anchor-nav a {
+      font-family: var(--fe); font-size: 0.62rem; letter-spacing: 0.1em;
+      text-transform: uppercase; color: rgba(255,255,255,0.5);
+      text-decoration: none; padding: 0.4rem 0.9rem;
+      border: 1px solid rgba(255,255,255,0.12); border-radius: 2rem;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .anchor-nav a:hover { color: var(--green); border-color: var(--green); }
+
+    /* ── DETAIL SECTION ── */
+    .detail-section {
+      padding: 6rem 2.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      max-width: 1100px;
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: 4rem;
+      align-items: start;
+    }
+    .detail-left { position: sticky; top: 140px; }
+    .detail-num {
+      font-family: var(--fh); font-size: 6rem; font-weight: 900;
+      color: rgba(0,255,65,0.08); line-height: 1; margin-bottom: 0.5rem;
+      letter-spacing: -0.04em;
+    }
+    .detail-tag {
+      font-family: var(--fe); font-size: 0.62rem; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--green); margin-bottom: 1rem;
+    }
+    .detail-title {
+      font-family: var(--fh); font-size: clamp(2rem, 3.5vw, 3.2rem);
+      font-weight: 900; line-height: 0.9; text-transform: uppercase;
+      letter-spacing: -0.015em; color: var(--white); margin-bottom: 1.5rem;
+    }
+    .detail-stat-box {
+      margin-top: 2rem; padding: 1.5rem;
+      border: 1px solid rgba(0,255,65,0.18);
+      border-radius: 0.75rem;
+      background: rgba(0,255,65,0.03);
+    }
+    .detail-stat-val {
+      font-family: var(--fh); font-size: 3rem; color: var(--green);
+      font-weight: 900; line-height: 1;
+    }
+    .detail-stat-label { font-family: var(--fe); font-size: 0.65rem; color: rgba(255,255,255,0.45); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 0.4rem; }
+    .detail-right p {
+      font-size: 1rem; color: rgba(255,255,255,0.7); line-height: 1.75;
+      margin-bottom: 1.4rem;
+    }
+
+    /* ── HOW IT WORKS ── */
+    .how-title {
+      font-family: var(--fe); font-size: 0.65rem; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--orange); margin: 2.5rem 0 1.2rem;
+    }
+    .steps { display: flex; flex-direction: column; gap: 1rem; }
+    .step-item {
+      display: flex; gap: 1.2rem; align-items: flex-start;
+      padding: 1.2rem; background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07); border-radius: 0.6rem;
+    }
+    .step-n {
+      font-family: var(--fh); font-size: 1.4rem; color: var(--green);
+      font-weight: 900; line-height: 1; flex-shrink: 0; min-width: 1.8rem;
+    }
+    .step-text strong { display: block; font-family: var(--fe); font-size: 0.75rem; color: var(--white); letter-spacing: 0.06em; margin-bottom: 0.3rem; }
+    .step-text span { font-size: 0.88rem; color: rgba(255,255,255,0.55); line-height: 1.6; }
+
+    /* ── BENEFITS ── */
+    .benefits {
+      margin-top: 2rem; display: flex; flex-direction: column; gap: 0.6rem;
+    }
+    .benefit {
+      display: flex; align-items: flex-start; gap: 0.8rem;
+      font-size: 0.9rem; color: rgba(255,255,255,0.65); line-height: 1.5;
+    }
+    .benefit::before { content: '→'; color: var(--green); flex-shrink: 0; font-family: var(--fe); }
+
+    /* ── CTA SECTION ── */
+    .page-cta {
+      padding: 6rem 2.5rem;
+      text-align: center;
+      border-top: 1px solid rgba(255,255,255,0.07);
+    }
+    .page-cta-eyebrow {
+      font-family: var(--fe); font-size: 0.7rem; letter-spacing: 0.2em;
+      color: var(--green); text-transform: uppercase; margin-bottom: 1rem;
+    }
+    .page-cta-heading {
+      font-family: var(--fh); font-size: clamp(2.5rem, 5vw, 4.5rem);
+      font-weight: 900; text-transform: uppercase; color: var(--white);
+      letter-spacing: -0.02em; margin-bottom: 1.5rem;
+    }
+    .page-cta-btn {
+      display: inline-flex; align-items: center; gap: 0.6em;
+      background: var(--green); color: #000; padding: 0.85rem 2.5rem;
+      border-radius: 2rem; font-family: var(--fe); font-size: 0.75rem;
+      letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .page-cta-btn:hover { opacity: 0.88; transform: scale(1.03); }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 2rem 2.5rem; border-top: 1px solid rgba(255,255,255,0.07);
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 1rem;
+    }
+    footer p { font-family: var(--fe); font-size: 0.65rem; color: rgba(255,255,255,0.3); letter-spacing: 0.08em; }
+    footer a { font-family: var(--fe); font-size: 0.65rem; color: rgba(255,255,255,0.3); text-decoration: none; }
+    footer a:hover { color: var(--green); }
+
+    @media (max-width: 768px) {
+      #nav { padding: 0.8rem 1.2rem; }
+      .nav-links { display: none; }
+      .page-hero { padding: 7rem 1.5rem 3rem; }
+      .anchor-nav { padding: 1rem 1.5rem; top: 56px; }
+      .detail-section { grid-template-columns: 1fr; gap: 2.5rem; padding: 4rem 1.5rem; }
+      .detail-left { position: static; }
+      .page-cta { padding: 4rem 1.5rem; }
+      footer { padding: 1.5rem 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="nav">
+    <a href="index.html" class="nav-logo">GLOBAL ARC <span>AI</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html#home">Home</a></li>
+      <li><a href="index.html#services">Services</a></li>
+      <li><a href="index.html#custom-ai">Bespoke Builds</a></li>
+      <li><a href="index.html#about">About</a></li>
+    </ul>
+    <a href="index.html#contact" class="nav-cta">Get started →</a>
+  </nav>
+
+  <!-- PAGE HERO -->
+  <div class="page-hero">
+    <p class="page-eyebrow">Bespoke Builds</p>
+    <h1 class="page-title">BUILT FROM<br><span>SCRATCH</span>.<br>BUILT FOR YOU.</h1>
+    <p class="page-intro">Every system we build is custom — designed around your business, your tools, and your exact goals. No off-the-shelf products, no generic templates. Just precise, intelligent AI that fits the way you work.</p>
+  </div>
+
+  <!-- ANCHOR NAV -->
+  <nav class="anchor-nav">
+    <a href="#ai-chatbot">01 AI Chatbot</a>
+    <a href="#lead-intelligence">02 Lead Intelligence</a>
+    <a href="#document-processing">03 Document Processing</a>
+    <a href="#business-intelligence">04 Business Intelligence</a>
+    <a href="#workflow-orchestration">05 Workflow Orchestration</a>
+    <a href="#web-design">06 AI Web Design</a>
+  </nav>
+
+  <!-- 01 CUSTOM AI CHATBOT -->
+  <section class="detail-section" id="ai-chatbot">
+    <div class="detail-left">
+      <div class="detail-num">01</div>
+      <div class="detail-tag">Bespoke Build</div>
+      <h2 class="detail-title">CUSTOM AI<br>CHATBOT</h2>
+      <div class="detail-stat-box">
+        <div class="detail-stat-val">90%</div>
+        <div class="detail-stat-label">Queries handled automatically</div>
+      </div>
+    </div>
+    <div class="detail-right">
+      <p>Your business gets a fully custom AI chatbot — trained on your products, services, pricing, FAQs, and tone of voice. It doesn't just answer questions; it qualifies leads, books calls, handles objections, and hands off to your team only when it matters.</p>
+      <p>Unlike generic chatbots that frustrate visitors with scripted dead-ends, your AI holds natural, intelligent conversations. It understands context, remembers what was said earlier in the conversation, and responds the way a sharp member of your team would — but available 24/7.</p>
+      <p>Every conversation is logged and categorised. Your team sees exactly who asked what, how the AI responded, and which leads are ready to convert — giving you a fully transparent AI layer you stay in control of.</p>
+
+      <div class="how-title">How it works</div>
+      <div class="steps">
+        <div class="step-item"><span class="step-n">1</span><div class="step-text"><strong>Knowledge base built</strong><span>We train the AI on your business — services, pricing, FAQs, tone, brand voice, and any specific rules or policies you have.</span></div></div>
+        <div class="step-item"><span class="step-n">2</span><div class="step-text"><strong>Deployed to your channels</strong><span>The chatbot is embedded on your website and connected to your messaging platforms — WhatsApp, Instagram, email, or any channel you use.</span></div></div>
+        <div class="step-item"><span class="step-n">3</span><div class="step-text"><strong>Qualifies and converts</strong><span>The AI engages visitors, answers questions, collects contact details, and pushes qualified leads into your CRM or booking system automatically.</span></div></div>
+        <div class="step-item"><span class="step-n">4</span><div class="step-text"><strong>Escalates intelligently</strong><span>When a conversation needs a human, the AI flags it, summarises the conversation, and routes it to the right person on your team.</span></div></div>
+      </div>
+
+      <div class="benefits">
+        <div class="benefit">Handles enquiries around the clock — no missed leads</div>
+        <div class="benefit">Trained on your exact products, pricing, and tone of voice</div>
+        <div class="benefit">Qualifies leads before they reach your sales team</div>
+        <div class="benefit">Connects to your CRM, calendar, and booking systems</div>
+        <div class="benefit">Works across your website, WhatsApp, Instagram, and more</div>
+        <div class="benefit">Full conversation history and performance analytics dashboard</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 LEAD INTELLIGENCE -->
+  <section class="detail-section" id="lead-intelligence">
+    <div class="detail-left">
+      <div class="detail-num">02</div>
+      <div class="detail-tag">Bespoke Build</div>
+      <h2 class="detail-title">LEAD<br>INTELLIGENCE</h2>
+      <div class="detail-stat-box">
+        <div class="detail-stat-val">5×</div>
+        <div class="detail-stat-label">Faster lead-to-conversation</div>
+      </div>
+    </div>
+    <div class="detail-right">
+      <p>Every inbound lead is automatically scored, segmented, and prioritised before any human sees it. Your AI analyses the enquiry, matches it against your ideal customer profile, assigns a quality score, and routes it to the right person with a full context summary — all in seconds.</p>
+      <p>High-value leads are flagged immediately and trigger instant outreach — a personalised message sent while the lead is still on your website. Lower-priority leads are nurtured through automated follow-up sequences until they're ready to convert.</p>
+      <p>Your sales team stops wasting time on cold or low-quality enquiries. They work a curated list of warm, pre-qualified leads — with all the context they need to close, already in their hands.</p>
+
+      <div class="how-title">How it works</div>
+      <div class="steps">
+        <div class="step-item"><span class="step-n">1</span><div class="step-text"><strong>Lead captured across all channels</strong><span>Forms, chatbot conversations, email enquiries, social DMs — all funnel into a single AI-powered inbox for processing.</span></div></div>
+        <div class="step-item"><span class="step-n">2</span><div class="step-text"><strong>AI scores and segments</strong><span>Each lead is analysed against your ideal customer criteria — budget, location, job type, urgency — and assigned a priority score.</span></div></div>
+        <div class="step-item"><span class="step-n">3</span><div class="step-text"><strong>Instant personalised outreach</strong><span>High-scoring leads receive an immediate, personalised response referencing their specific enquiry — while the lead is still warm.</span></div></div>
+        <div class="step-item"><span class="step-n">4</span><div class="step-text"><strong>CRM updated automatically</strong><span>All lead data, scores, and conversation history are pushed to your CRM with no manual entry required.</span></div></div>
+      </div>
+
+      <div class="benefits">
+        <div class="benefit">Instant response to every inbound lead, 24/7</div>
+        <div class="benefit">AI scores leads against your exact ideal customer profile</div>
+        <div class="benefit">High-value leads flagged and actioned before competitors respond</div>
+        <div class="benefit">Automated nurture sequences for leads not yet ready to buy</div>
+        <div class="benefit">Connects to any CRM — HubSpot, Salesforce, Pipedrive, and more</div>
+        <div class="benefit">Real-time dashboard showing lead volume, quality, and conversion rates</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 DOCUMENT PROCESSING AI -->
+  <section class="detail-section" id="document-processing">
+    <div class="detail-left">
+      <div class="detail-num">03</div>
+      <div class="detail-tag">Bespoke Build</div>
+      <h2 class="detail-title">DOCUMENT<br>PROCESSING</h2>
+      <div class="detail-stat-box">
+        <div class="detail-stat-val">Zero</div>
+        <div class="detail-stat-label">Manual data entry required</div>
+      </div>
+    </div>
+    <div class="detail-right">
+      <p>Your AI reads, extracts, classifies, and acts on documents automatically — invoices, contracts, purchase orders, compliance forms, delivery notes, and anything else your business handles. The moment a document arrives, the right data is extracted and pushed to the right system.</p>
+      <p>Whether documents arrive via email, upload portal, or physical scan, your AI processes them without a human touching them. It validates the data, flags exceptions, and routes anything unusual for review — while clean documents flow straight through to your systems.</p>
+      <p>For businesses that handle high volumes of paperwork, this isn't a small efficiency gain — it's hours of admin work eliminated every single day, with a near-zero error rate replacing the inevitable mistakes of manual entry.</p>
+
+      <div class="how-title">How it works</div>
+      <div class="steps">
+        <div class="step-item"><span class="step-n">1</span><div class="step-text"><strong>Document received</strong><span>Your AI monitors your email inbox, upload portal, or any connected channel for incoming documents — in any format.</span></div></div>
+        <div class="step-item"><span class="step-n">2</span><div class="step-text"><strong>Data extracted and validated</strong><span>Key fields are identified and extracted — amounts, dates, names, references — then validated against your business rules.</span></div></div>
+        <div class="step-item"><span class="step-n">3</span><div class="step-text"><strong>Pushed to your systems</strong><span>Clean data is automatically entered into your accounting software, ERP, CRM, or any other system — with zero manual input.</span></div></div>
+        <div class="step-item"><span class="step-n">4</span><div class="step-text"><strong>Exceptions flagged for review</strong><span>Anything that doesn't match expected patterns is flagged and sent to the right person with a summary of what needs checking.</span></div></div>
+      </div>
+
+      <div class="benefits">
+        <div class="benefit">Processes invoices, contracts, forms, and reports automatically</div>
+        <div class="benefit">Works with PDFs, images, emails, and scanned documents</div>
+        <div class="benefit">Connects to Xero, QuickBooks, SAP, and other accounting platforms</div>
+        <div class="benefit">Validates data against your business rules before processing</div>
+        <div class="benefit">Flags anomalies and discrepancies for human review</div>
+        <div class="benefit">Handles hundreds of documents per day at consistent accuracy</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 BUSINESS INTELLIGENCE -->
+  <section class="detail-section" id="business-intelligence">
+    <div class="detail-left">
+      <div class="detail-num">04</div>
+      <div class="detail-tag">Bespoke Build</div>
+      <h2 class="detail-title">BUSINESS<br>INTELLIGENCE</h2>
+      <div class="detail-stat-box">
+        <div class="detail-stat-val">Daily</div>
+        <div class="detail-stat-label">Automated insight reports</div>
+      </div>
+    </div>
+    <div class="detail-right">
+      <p>Your AI monitors your business data continuously — revenue, leads, jobs completed, customer satisfaction, team performance — and surfaces the insights that actually matter. Instead of digging through dashboards, you receive a clear, concise summary every morning with the key numbers and what they mean.</p>
+      <p>When something unusual happens — a revenue spike, a drop in conversion rate, a job running over budget — your AI detects it immediately and alerts you with context. Not just the number, but why it matters and what action, if any, you should take.</p>
+      <p>This is business intelligence built for people who run businesses, not data analysts. The AI translates raw data into plain-language insights you can act on — so you always know where your business stands without spending time pulling reports.</p>
+
+      <div class="how-title">How it works</div>
+      <div class="steps">
+        <div class="step-item"><span class="step-n">1</span><div class="step-text"><strong>Data sources connected</strong><span>We integrate your CRM, accounting software, job management system, and any other platforms into a unified data layer.</span></div></div>
+        <div class="step-item"><span class="step-n">2</span><div class="step-text"><strong>AI monitors continuously</strong><span>Your AI tracks KPIs, trends, and anomalies across all connected data sources — 24 hours a day, without manual input.</span></div></div>
+        <div class="step-item"><span class="step-n">3</span><div class="step-text"><strong>Daily report delivered</strong><span>Each morning you receive a plain-language summary of the previous day's performance, highlights, and anything that needs attention.</span></div></div>
+        <div class="step-item"><span class="step-n">4</span><div class="step-text"><strong>Instant alerts for anomalies</strong><span>When the AI detects something outside normal patterns, you're alerted immediately with context and suggested next steps.</span></div></div>
+      </div>
+
+      <div class="benefits">
+        <div class="benefit">Daily automated performance summaries delivered to your inbox</div>
+        <div class="benefit">Plain-language insights — no data analysis experience needed</div>
+        <div class="benefit">Connects to your CRM, accounting software, and job management tools</div>
+        <div class="benefit">Instant alerts when KPIs move outside expected ranges</div>
+        <div class="benefit">Trend analysis to spot opportunities and risks early</div>
+        <div class="benefit">Custom dashboards built around the metrics you care about</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 WORKFLOW ORCHESTRATION -->
+  <section class="detail-section" id="workflow-orchestration">
+    <div class="detail-left">
+      <div class="detail-num">05</div>
+      <div class="detail-tag">Bespoke Build</div>
+      <h2 class="detail-title">WORKFLOW<br>ORCHESTRATION</h2>
+      <div class="detail-stat-box">
+        <div class="detail-stat-val">100+</div>
+        <div class="detail-stat-label">Trigger conditions supported</div>
+      </div>
+    </div>
+    <div class="detail-right">
+      <p>Every time your team completes a task, receives a payment, updates a record, or hits any trigger you define — a chain of automated actions fires instantly. Your business processes run themselves, connected end-to-end by an AI layer that handles the coordination your team used to do manually.</p>
+      <p>New customer booked? Client file created, onboarding email sent, job scheduled, team notified, materials ordered. Payment received? Invoice marked paid, accounting updated, thank-you message sent. The AI handles the handoffs so your team focuses on the work itself.</p>
+      <p>These aren't rigid if-then scripts. Your AI understands context — it adapts based on job type, customer history, team capacity, and any conditions you define. Complex multi-step processes run without a single person managing the flow.</p>
+
+      <div class="how-title">How it works</div>
+      <div class="steps">
+        <div class="step-item"><span class="step-n">1</span><div class="step-text"><strong>Triggers defined</strong><span>We map your existing processes and identify every point where manual handoffs happen — form submissions, status changes, payments, completions.</span></div></div>
+        <div class="step-item"><span class="step-n">2</span><div class="step-text"><strong>Workflows built and connected</strong><span>Each trigger is linked to a chain of automated actions across your tools — CRM updates, emails, notifications, calendar events, and more.</span></div></div>
+        <div class="step-item"><span class="step-n">3</span><div class="step-text"><strong>AI adds context and conditions</strong><span>Logic is added so the AI responds differently based on job type, customer tier, team availability, or any variable that matters to your business.</span></div></div>
+        <div class="step-item"><span class="step-n">4</span><div class="step-text"><strong>Runs and monitors itself</strong><span>Once live, the orchestration layer runs 24/7 with a monitoring dashboard showing every workflow execution, success, and any exceptions.</span></div></div>
+      </div>
+
+      <div class="benefits">
+        <div class="benefit">End-to-end process automation across all your business tools</div>
+        <div class="benefit">Eliminates manual handoffs between tasks and team members</div>
+        <div class="benefit">Context-aware logic that adapts to job type, customer, and conditions</div>
+        <div class="benefit">Connects any combination of CRM, email, calendar, and operations tools</div>
+        <div class="benefit">Full execution log — see every action taken and when</div>
+        <div class="benefit">Scales with your business — add new workflows without rebuilding</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 AI-POWERED WEB DESIGN -->
+  <section class="detail-section" id="web-design">
+    <div class="detail-left">
+      <div class="detail-num">06</div>
+      <div class="detail-tag">Bespoke Build</div>
+      <h2 class="detail-title">AI-POWERED<br>WEB DESIGN</h2>
+      <div class="detail-stat-box">
+        <div class="detail-stat-val">Weeks</div>
+        <div class="detail-stat-label">From brief to live site</div>
+      </div>
+    </div>
+    <div class="detail-right">
+      <p>We build fast, modern websites designed to convert — and we build them alongside your AI automations so your site and your systems work as one from day one. Your website isn't just a brochure; it's the front-end of your entire AI operation.</p>
+      <p>Every form, button, and entry point connects directly into your AI workflows. A lead fills in a form — your AI qualifies them, responds instantly, and books a call. A customer requests a quote — it lands in their inbox in under two minutes. The website and the automation are one seamless system.</p>
+      <p>Design-wise, we build sharp, high-performance sites that reflect the quality of your business. Mobile-first, lightning-fast, and built for conversion — not just to look good. From copy to launch, we handle everything.</p>
+
+      <div class="how-title">How it works</div>
+      <div class="steps">
+        <div class="step-item"><span class="step-n">1</span><div class="step-text"><strong>Brief and discovery</strong><span>We start with a detailed brief covering your brand, goals, target customer, and the AI automations the site needs to connect to.</span></div></div>
+        <div class="step-item"><span class="step-n">2</span><div class="step-text"><strong>Design and build</strong><span>Your site is designed and built from scratch — clean, fast, and conversion-focused. No templates, no page builders, no bloated code.</span></div></div>
+        <div class="step-item"><span class="step-n">3</span><div class="step-text"><strong>AI systems integrated</strong><span>Every form and entry point is wired directly into your AI automations — lead qualification, auto-quote, chatbot, booking system, and more.</span></div></div>
+        <div class="step-item"><span class="step-n">4</span><div class="step-text"><strong>Launched and supported</strong><span>We handle deployment, DNS, performance optimisation, and provide ongoing support as your business and systems evolve.</span></div></div>
+      </div>
+
+      <div class="benefits">
+        <div class="benefit">Built from scratch — no templates, no compromise on performance</div>
+        <div class="benefit">Every form and CTA connected to your AI automation layer</div>
+        <div class="benefit">Mobile-first, lightning-fast, and optimised for Google rankings</div>
+        <div class="benefit">Conversion-focused design built around your customer journey</div>
+        <div class="benefit">Copy, design, build, and launch all handled under one roof</div>
+        <div class="benefit">Ongoing support as your site and automations grow together</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="page-cta">
+    <p class="page-cta-eyebrow">Ready to build?</p>
+    <h2 class="page-cta-heading">LET'S DESIGN YOUR SYSTEM</h2>
+    <a href="index.html#contact" class="page-cta-btn">Book a free discovery call →</a>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2025 Global Arc AI. All rights reserved.</p>
+    <a href="index.html">← Back to home</a>
+  </footer>
+
+</body>
+</html>
