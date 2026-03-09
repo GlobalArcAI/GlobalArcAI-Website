@@ -271,7 +271,7 @@
       font-family: var(--fe);
       font-size: 0.72em;
       letter-spacing: 0.28em;
-      color: var(--green);
+      color: var(--orange);
       margin-bottom: 1.2em;
       opacity: 0.9;
     }
@@ -292,7 +292,7 @@
       display: inline-block;
       will-change: transform, opacity, filter;
     }
-    .hero-line-cycle { color: var(--green); }
+    .hero-line-cycle { color: var(--orange); }
     .hero-cycler {
       display: inline-block;
       transition: opacity 0.35s ease, transform 0.35s ease;
@@ -1587,7 +1587,7 @@
 
       /* Hero */
       .hero { padding: 1.5em; }
-      .hero-line { font-size: 3.5em; }
+      .hero-line { font-size: 4.8em; }
       .hero-sub { font-size: 0.95em; }
       .hero-cta-link { align-self: center; justify-content: center; }
 
@@ -1683,7 +1683,7 @@
     @media (max-width: 500px) {
       .services .feature-pills { grid-template-columns: 1fr; }
       .process-grid { grid-template-columns: 1fr; }
-      .hero-line { font-size: 2.6em; }
+      .hero-line { font-size: 3.2em; }
       .section-h { font-size: 3.8em; }
     }
   </style>
@@ -2307,11 +2307,28 @@
     /* refresh so all in-viewport elements are correctly evaluated */
     ScrollTrigger.refresh();
 
-    /* ── Hero ambient particle background ── */
+    /* ── Hero: AI neural network background ── */
     (function() {
       var canvas = document.getElementById('hero-canvas');
       var ctx = canvas.getContext('2d');
-      var W, H, particles, orbs;
+      var W, H, nodes;
+      var G = '0,255,65';
+      var NODE_COUNT = 60;
+      var MAX_DIST = 200;
+
+      function Node() {
+        this.x  = Math.random() * W;
+        this.y  = Math.random() * H;
+        this.r  = Math.random() * 2.2 + 0.8;
+        this.vx = (Math.random() - 0.5) * 0.28;
+        this.vy = (Math.random() - 0.5) * 0.28;
+        this.phase = Math.random() * Math.PI * 2;
+      }
+
+      function init() {
+        nodes = [];
+        for (var i = 0; i < NODE_COUNT; i++) nodes.push(new Node());
+      }
 
       function resize() {
         W = canvas.width  = canvas.offsetWidth;
@@ -2319,71 +2336,84 @@
         init();
       }
 
-      function Particle() {
-        this.x = Math.random() * W;
-        this.y = Math.random() * H;
-        this.r = Math.random() * 1.5 + 0.3;
-        this.alpha = Math.random() * 0.35 + 0.05;
-        this.vx = (Math.random() - 0.5) * 0.25;
-        this.vy = (Math.random() - 0.5) * 0.25;
-        this.life = Math.random() * 300 + 150;
-        this.maxLife = this.life;
-      }
-
-      function Orb() {
-        this.x = Math.random() * W;
-        this.y = Math.random() * H;
-        this.r = Math.random() * 180 + 80;
-        this.alpha = Math.random() * 0.04 + 0.01;
-        this.vx = (Math.random() - 0.5) * 0.12;
-        this.vy = (Math.random() - 0.5) * 0.12;
-      }
-
-      function init() {
-        particles = [];
-        for (var i = 0; i < 70; i++) {
-          var p = new Particle();
-          p.life = Math.random() * p.maxLife;
-          particles.push(p);
-        }
-        orbs = [];
-        for (var j = 0; j < 6; j++) {
-          orbs.push(new Orb());
+      /* data pulse: bright dot travelling along an edge */
+      var pulses = [];
+      function spawnPulse() {
+        /* pick two connected nodes */
+        var a = nodes[Math.floor(Math.random() * nodes.length)];
+        var b = nodes[Math.floor(Math.random() * nodes.length)];
+        var dx = a.x - b.x, dy = a.y - b.y;
+        if (Math.sqrt(dx*dx + dy*dy) < MAX_DIST) {
+          pulses.push({ a: a, b: b, t: 0, speed: 0.008 + Math.random() * 0.012 });
         }
       }
+      setInterval(spawnPulse, 300);
 
       function draw() {
         ctx.clearRect(0, 0, W, H);
 
-        /* soft glow orbs */
-        for (var j = 0; j < orbs.length; j++) {
-          var o = orbs[j];
-          o.x += o.vx; o.y += o.vy;
-          if (o.x < -o.r) o.x = W + o.r;
-          if (o.x > W + o.r) o.x = -o.r;
-          if (o.y < -o.r) o.y = H + o.r;
-          if (o.y > H + o.r) o.y = -o.r;
-          var grd = ctx.createRadialGradient(o.x, o.y, 0, o.x, o.y, o.r);
-          grd.addColorStop(0, 'rgba(0,220,65,' + o.alpha + ')');
-          grd.addColorStop(1, 'rgba(0,220,65,0)');
+        /* move nodes */
+        for (var i = 0; i < nodes.length; i++) {
+          var n = nodes[i];
+          n.x += n.vx; n.y += n.vy; n.phase += 0.018;
+          if (n.x < 0)  { n.x = 0;  n.vx *= -1; }
+          if (n.x > W)  { n.x = W;  n.vx *= -1; }
+          if (n.y < 0)  { n.y = 0;  n.vy *= -1; }
+          if (n.y > H)  { n.y = H;  n.vy *= -1; }
+        }
+
+        /* draw edges */
+        for (var i = 0; i < nodes.length; i++) {
+          for (var j = i + 1; j < nodes.length; j++) {
+            var dx = nodes[i].x - nodes[j].x;
+            var dy = nodes[i].y - nodes[j].y;
+            var d  = Math.sqrt(dx*dx + dy*dy);
+            if (d < MAX_DIST) {
+              var a = (1 - d / MAX_DIST) * 0.18;
+              ctx.beginPath();
+              ctx.moveTo(nodes[i].x, nodes[i].y);
+              ctx.lineTo(nodes[j].x, nodes[j].y);
+              ctx.strokeStyle = 'rgba(' + G + ',' + a + ')';
+              ctx.lineWidth = 0.6;
+              ctx.stroke();
+            }
+          }
+        }
+
+        /* draw data pulses */
+        for (var k = pulses.length - 1; k >= 0; k--) {
+          var p = pulses[k];
+          p.t += p.speed;
+          if (p.t >= 1) { pulses.splice(k, 1); continue; }
+          var px = p.a.x + (p.b.x - p.a.x) * p.t;
+          var py = p.a.y + (p.b.y - p.a.y) * p.t;
+          var fade = p.t < 0.15 ? p.t / 0.15 : (p.t > 0.85 ? (1 - p.t) / 0.15 : 1);
+          var grd = ctx.createRadialGradient(px, py, 0, px, py, 8);
+          grd.addColorStop(0, 'rgba(' + G + ',' + (0.9 * fade) + ')');
+          grd.addColorStop(1, 'rgba(' + G + ',0)');
           ctx.beginPath();
-          ctx.arc(o.x, o.y, o.r, 0, Math.PI * 2);
+          ctx.arc(px, py, 8, 0, Math.PI * 2);
           ctx.fillStyle = grd;
           ctx.fill();
         }
 
-        /* tiny floating particles */
-        for (var i = 0; i < particles.length; i++) {
-          var p = particles[i];
-          p.x += p.vx; p.y += p.vy; p.life--;
-          if (p.life <= 0) {
-            particles[i] = new Particle();
-            continue;
-          }
-          var fade = p.life < 40 ? p.life / 40 : (p.life > p.maxLife - 40 ? (p.maxLife - p.life) / 40 : 1);
+        /* draw nodes */
+        for (var i = 0; i < nodes.length; i++) {
+          var n = nodes[i];
+          var pulse = (Math.sin(n.phase) + 1) * 0.5;
+          var alpha = 0.18 + pulse * 0.45;
+          /* glow */
+          var grd = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, n.r * 4);
+          grd.addColorStop(0, 'rgba(' + G + ',' + (alpha * 0.6) + ')');
+          grd.addColorStop(1, 'rgba(' + G + ',0)');
           ctx.beginPath();
-          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-          ctx.fillStyle = 'rgba(0,220,65,' + (p.alpha * fade) + ')';
+          ctx.arc(n.x, n.y, n.r * 4, 0, Math.PI * 2);
+          ctx.fillStyle = grd;
+          ctx.fill();
+          /* core */
+          ctx.beginPath();
+          ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(' + G + ',' + alpha + ')';
           ctx.fill();
         }
 
