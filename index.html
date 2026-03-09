@@ -226,12 +226,12 @@
     .hero {
       background: var(--black);
       min-height: 100vh;
-      padding: 2em;
       display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
+      align-items: center;
+      justify-content: center;
       position: relative;
       overflow: hidden;
+      text-align: center;
     }
     #hero-canvas {
       position: absolute;
@@ -240,23 +240,16 @@
       height: 100%;
       pointer-events: none;
       z-index: 0;
-      opacity: 0.75;
     }
-    /* large ambient glow behind heading — removed blue, keep div for animation compat */
-    .hero-glow {
-      display: none;
-    }
-    .hero-bg-orb {
+    .hero-overlay {
       position: absolute;
-      top: 10%;
-      right: -15%;
-      width: 55em;
-      height: 55em;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(0,255,65,0.06) 0%, transparent 70%);
-      animation: orbPulse 8s ease-in-out infinite;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.55) 100%);
+      z-index: 0;
       pointer-events: none;
     }
+    .hero-glow { display: none; }
+    .hero-bg-orb { display: none; }
     @keyframes glowPulse {
       0%, 100% { opacity: 0.8; transform: scale(1) translateY(0); }
       50%       { opacity: 1;   transform: scale(1.08) translateY(-1em); }
@@ -268,34 +261,51 @@
     .hero-content {
       position: relative;
       z-index: 1;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      align-items: center;
-      gap: 3em;
-      padding-bottom: 4em;
-      min-height: calc(100vh - 8em);
-    }
-    .hero-left {
       display: flex;
       flex-direction: column;
+      align-items: center;
+      max-width: 960px;
+      padding: 2em;
     }
-    .hero-right {
-      display: flex;
-      align-items: stretch;
+    .hero-eyebrow {
+      font-family: var(--fe);
+      font-size: 0.72em;
+      letter-spacing: 0.28em;
+      color: var(--green);
+      margin-bottom: 1.2em;
+      opacity: 0.9;
+    }
+    .hero-headline-wrap {
+      margin-bottom: 0.5em;
     }
     .hero-line {
       display: block;
       font-family: var(--fh);
-      font-size: 5em;
+      font-size: 5.5em;
       font-weight: 900;
-      line-height: 0.85;
+      line-height: 0.88;
       color: var(--white);
       text-transform: uppercase;
-      letter-spacing: -0.015em;
+      letter-spacing: -0.02em;
     }
     .hero-line .word {
       display: inline-block;
       will-change: transform, opacity, filter;
+    }
+    .hero-line-cycle { color: var(--green); }
+    .hero-cycler {
+      display: inline-block;
+      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+    .hero-sub {
+      font-family: var(--fe);
+      font-size: 1.1em;
+      color: rgba(255,255,255,0.55);
+      max-width: 560px;
+      line-height: 1.7;
+      letter-spacing: 0.03em;
+      margin-top: 1.4em;
+      margin-bottom: 1.8em;
     }
     .hero-cta-link {
       display: inline-flex;
@@ -303,7 +313,7 @@
       gap: 0.6em;
       background: var(--orange);
       color: #000;
-      padding: 0.75em 2em;
+      padding: 0.75em 2.2em;
       border-radius: 2em;
       font-family: var(--fe);
       font-size: 0.75em;
@@ -311,8 +321,6 @@
       text-transform: uppercase;
       text-decoration: none;
       transition: transform 0.2s, background 0.2s;
-      margin-top: 1.8em;
-      align-self: flex-start;
     }
     .hero-cta-link:hover { transform: scale(1.04); background: #00cc33; }
     /* ── Hero benefit slideshow ── */
@@ -665,15 +673,6 @@
       transition: background 0.3s;
     }
     .hv-nav-dot.active { background: var(--orange); }
-    .hero-sub {
-      margin-top: 1.5em;
-      font-family: var(--fe);
-      font-size: 1.6em;
-      color: rgba(255,255,255,0.45);
-      letter-spacing: 0.04em;
-      max-width: 32em;
-    }
-
     /* ═══ MARQUEE ═══ */
     .marquee-wrap {
       background: var(--black);
@@ -1587,17 +1586,10 @@
       .nav-logo img { height: 160px !important; max-height: 160px !important; max-width: 320px !important; }
 
       /* Hero */
-      .hero { padding: 1.5em; padding-top: 185px; }
-      .hero-content {
-        grid-template-columns: 1fr;
-        gap: 2em;
-        padding-bottom: 3em;
-        min-height: auto;
-      }
-      .hero-right { display: flex; }
-      .hero-visual { height: 34em; }
-      .hero-line { font-size: 3.8em; }
-      .hero-cta-link { align-self: stretch; justify-content: center; }
+      .hero { padding: 1.5em; }
+      .hero-line { font-size: 3.5em; }
+      .hero-sub { font-size: 0.95em; }
+      .hero-cta-link { align-self: center; justify-content: center; }
 
       /* About */
       .about {
@@ -1691,7 +1683,7 @@
     @media (max-width: 500px) {
       .services .feature-pills { grid-template-columns: 1fr; }
       .process-grid { grid-template-columns: 1fr; }
-      .hero-line { font-size: 3em; }
+      .hero-line { font-size: 2.6em; }
       .section-h { font-size: 3.8em; }
     }
   </style>
@@ -1761,163 +1753,15 @@
   <!-- HERO -->
   <section class="hero" id="home">
     <canvas id="hero-canvas"></canvas>
-    <div class="hero-bg-orb"></div>
-    <div class="hero-glow"></div>
+    <div class="hero-overlay"></div>
     <div class="hero-content">
-      <div class="hero-left">
-        <div class="hero-line"><span class="word">YOUR BUSINESS</span></div>
-        <div class="hero-line"><span class="word">ON AUTOPILOT.</span></div>
-        <p class="hero-sub">Bespoke AI systems designed around how your business works, automating the repetitive, accelerating the growth, and running 24/7 without you lifting a finger.</p>
-        <a href="#contact" class="hero-cta-link">Get started →</a>
+      <p class="hero-eyebrow">BESPOKE AI AUTOMATION</p>
+      <div class="hero-headline-wrap">
+        <div class="hero-line"><span class="word">YOUR BUSINESS,</span></div>
+        <div class="hero-line hero-line-cycle"><span class="hero-cycler" id="hero-cycler">AUTOMATED.</span></div>
       </div>
-      <div class="hero-right">
-        <div class="hero-visual" id="hero-visual">
-          <div class="hv-bar">
-            <div class="hv-brand">Global Arc AI: Live Preview</div>
-            <div class="hv-counter" id="hv-counter">01 / 05</div>
-          </div>
-          <div class="hv-slides">
-            <div class="hv-slide active" id="hv-slide-0">
-              <div class="hv-slide-text">
-                <div class="hv-tag">Lead Response</div>
-                <div class="hv-title">Reply to every<br>lead instantly.</div>
-                <div class="hv-body">When a lead enquires, your AI replies in seconds, qualifying them, answering questions, and booking calls if needed. No missed leads, no delays, no staff required. Works across email, SMS, and chat 24/7.</div>
-                <div class="hv-metric">
-                  <div class="hv-before"><div class="hv-ml">Before</div><div class="hv-mv">4 hours</div></div>
-                  <div class="hv-arrow">→</div>
-                  <div class="hv-after"><div class="hv-ml">After</div><div class="hv-mv">2 min</div></div>
-                </div>
-                <a href="automate.html" class="hv-cta">See how it works →</a>
-              </div>
-              <div class="hv-panel">
-                <div class="hv-chat">
-                  <div class="hv-bubble hv-bubble-in">Hi, need a quote for a full kitchen refit ASAP</div>
-                  <div class="hv-bubble hv-bubble-out">Hi! We can help. Here's your tailored quote: £3,200 inc VAT. Want to book a site visit?<span class="hv-ai-tag">AI · 34 seconds</span></div>
-                  <div class="hv-bubble hv-bubble-in">Perfect, yes let's book it in 👍</div>
-                </div>
-              </div>
-            </div>
-            <div class="hv-slide" id="hv-slide-1">
-              <div class="hv-slide-text">
-                <div class="hv-tag">Admin Automation</div>
-                <div class="hv-title">Eliminate<br>repetitive work.</div>
-                <div class="hv-body">Onboarding, documents, reports, scheduling, every task your team repeats gets replaced by an intelligent workflow. Your people focus on what actually moves the business forward.</div>
-                <div class="hv-metric">
-                  <div class="hv-before"><div class="hv-ml">Before</div><div class="hv-mv">23h/wk</div></div>
-                  <div class="hv-arrow">→</div>
-                  <div class="hv-after"><div class="hv-ml">After</div><div class="hv-mv">2h/wk</div></div>
-                </div>
-                <a href="automate.html" class="hv-cta">Explore automation →</a>
-              </div>
-              <div class="hv-panel">
-                <div class="hv-tasks">
-                  <div class="hv-task">Send onboarding email</div>
-                  <div class="hv-task">Update CRM with lead data</div>
-                  <div class="hv-task">Schedule follow-up call</div>
-                  <div class="hv-task">Generate weekly report</div>
-                  <div class="hv-task">Chase outstanding invoice</div>
-                </div>
-              </div>
-            </div>
-            <div class="hv-slide" id="hv-slide-2">
-              <div class="hv-slide-text">
-                <div class="hv-tag">Always On</div>
-                <div class="hv-title">Your business<br>never sleeps.</div>
-                <div class="hv-body">AI systems don't take breaks or miss a message. Your operations run continuously, handling queries, processing requests, and keeping workflows moving whether it's 2pm or 2am.</div>
-                <div class="hv-metric">
-                  <div class="hv-before"><div class="hv-ml">Before</div><div class="hv-mv">9–5 only</div></div>
-                  <div class="hv-arrow">→</div>
-                  <div class="hv-after"><div class="hv-ml">After</div><div class="hv-mv">24 / 7</div></div>
-                </div>
-                <a href="deploy.html" class="hv-cta">See deployment →</a>
-              </div>
-              <div class="hv-panel">
-                <div class="hv-uptime">
-                  <div class="hv-uptime-ring">24/7</div>
-                  <div class="hv-uptime-label">All systems operational</div>
-                  <div class="hv-uptime-bars">
-                    <div class="hv-uptime-bar" style="height:55%"></div>
-                    <div class="hv-uptime-bar" style="height:70%"></div>
-                    <div class="hv-uptime-bar" style="height:60%"></div>
-                    <div class="hv-uptime-bar" style="height:85%"></div>
-                    <div class="hv-uptime-bar" style="height:75%"></div>
-                    <div class="hv-uptime-bar" style="height:90%"></div>
-                    <div class="hv-uptime-bar" style="height:65%"></div>
-                    <div class="hv-uptime-bar" style="height:100%"></div>
-                    <div class="hv-uptime-bar" style="height:80%"></div>
-                    <div class="hv-uptime-bar" style="height:95%"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="hv-slide" id="hv-slide-3">
-              <div class="hv-slide-text">
-                <div class="hv-tag">Quotes · Invoices · Reviews</div>
-                <div class="hv-title">Quote. Invoice.<br>5-stars. Done.</div>
-                <div class="hv-body">Job done? Your AI sends a professional invoice automatically, then follows up by SMS asking for a Google review. More 5-star ratings, faster payments, zero manual effort.</div>
-                <div class="hv-metric">
-                  <div class="hv-before"><div class="hv-ml">Manual admin</div><div class="hv-mv">Hours</div></div>
-                  <div class="hv-arrow">→</div>
-                  <div class="hv-after"><div class="hv-ml">AI handles it</div><div class="hv-mv">Instant</div></div>
-                </div>
-                <a href="#feature-spot" class="hv-cta">See this service →</a>
-              </div>
-              <div class="hv-panel">
-                <div class="hv-invoice">
-                  <div class="hv-inv-header">Invoice #1024 · Auto-generated</div>
-                  <div class="hv-inv-row"><span>Kitchen refit (full)</span><span>£3,000</span></div>
-                  <div class="hv-inv-row"><span>Materials & supply</span><span>£480</span></div>
-                  <div class="hv-inv-row"><span>VAT (20%)</span><span>£696</span></div>
-                  <div class="hv-inv-total">Total: £4,176 ✓ Sent</div>
-                </div>
-                <div class="hv-sms-msg">📱 SMS sent: "Hi Sarah, thanks for choosing us! We'd love a Google review, here's the link: g.page/r/... ⭐⭐⭐⭐⭐"</div>
-              </div>
-            </div>
-            <div class="hv-slide" id="hv-slide-4">
-              <div class="hv-slide-text">
-                <div class="hv-tag">Web Design & Development</div>
-                <div class="hv-title">A website that<br>works for you.</div>
-                <div class="hv-body">We build fast, modern websites designed to convert, integrated with your AI automations from day one. No generic templates, no slow agencies. Built to match your brand and built to perform.</div>
-                <div class="hv-metric">
-                  <div class="hv-before"><div class="hv-ml">Old approach</div><div class="hv-mv">Months</div></div>
-                  <div class="hv-arrow">→</div>
-                  <div class="hv-after"><div class="hv-ml">With us</div><div class="hv-mv">Weeks</div></div>
-                </div>
-                <a href="#contact" class="hv-cta">Start a project →</a>
-              </div>
-              <div class="hv-panel">
-                <div class="hv-browser">
-                  <div class="hv-browser-bar">your-business.com</div>
-                  <div class="hv-browser-body">
-                    <div class="hv-browser-hero"></div>
-                    <div class="hv-browser-row">
-                      <div class="hv-browser-block wide"></div>
-                      <div class="hv-browser-block"></div>
-                    </div>
-                    <div class="hv-browser-row">
-                      <div class="hv-browser-block"></div>
-                      <div class="hv-browser-block"></div>
-                      <div class="hv-browser-block"></div>
-                    </div>
-                    <div class="hv-browser-row">
-                      <div class="hv-browser-block wide"></div>
-                      <div class="hv-browser-block"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="hv-progress" id="hv-progress"></div>
-            <div class="hv-nav">
-              <div class="hv-nav-dot active" data-idx="0"></div>
-              <div class="hv-nav-dot" data-idx="1"></div>
-              <div class="hv-nav-dot" data-idx="2"></div>
-              <div class="hv-nav-dot" data-idx="3"></div>
-              <div class="hv-nav-dot" data-idx="4"></div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <p class="hero-sub">Intelligent AI systems built around how you work — eliminating the repetitive, accelerating growth, and running 24/7 without you lifting a finger.</p>
+      <a href="#contact" class="hero-cta-link">Get started →</a>
     </div>
   </section>
 
@@ -2385,6 +2229,7 @@
     }, { passive: true });
 
     /* ── Hero text blur-in ── */
+    gsap.from('.hero-eyebrow', { opacity: 0, y: 10, duration: 0.8, ease: 'power2.out', delay: 0.2 });
     gsap.from('.hero-line .word', {
       opacity: 0,
       filter: 'blur(24px)',
@@ -2393,39 +2238,11 @@
       duration: 1.15,
       ease: 'power3.out',
       stagger: 0.1,
-      delay: 0.2
+      delay: 0.4
     });
-    gsap.from('.hero-sub', {
-      opacity: 0,
-      y: 12,
-      duration: 0.9,
-      ease: 'power2.out',
-      delay: 0.7
-    });
-    gsap.from('.hero-visual', {
-      opacity: 0,
-      scale: 0.85,
-      x: 20,
-      duration: 1,
-      ease: 'power3.out',
-      delay: 0.5
-    });
-    gsap.from('.hero-label', {
-      opacity: 0,
-      duration: 0.8,
-      delay: 1.2
-    });
-
-    /* ── Hero parallax ── */
-    gsap.to('.hero-bg-orb', {
-      y: '-15em',
-      scrollTrigger: {
-        trigger: '.hero',
-        start: 'top top',
-        end: 'bottom top',
-        scrub: true
-      }
-    });
+    gsap.from('#hero-cycler', { opacity: 0, y: 15, duration: 0.9, ease: 'power3.out', delay: 0.6 });
+    gsap.from('.hero-sub', { opacity: 0, y: 12, duration: 0.9, ease: 'power2.out', delay: 0.8 });
+    gsap.from('.hero-cta-link', { opacity: 0, y: 10, duration: 0.7, ease: 'power2.out', delay: 1.0 });
 
     /* hero text stays visible on scroll — no blur-out */
 
@@ -2490,46 +2307,92 @@
     /* refresh so all in-viewport elements are correctly evaluated */
     ScrollTrigger.refresh();
 
-    /* ── Hero background matrix (matches intro for seamless transition) ── */
+    /* ── Hero ambient particle background ── */
     (function() {
       var canvas = document.getElementById('hero-canvas');
-      var ctx    = canvas.getContext('2d');
-      var CHARS  = '01アイウエカキクGLOBALARCAI0110100111001101011010'.split('');
-      var FS     = 14;
-      var W, H, drops;
+      var ctx = canvas.getContext('2d');
+      var W, H, particles, orbs;
 
       function resize() {
         W = canvas.width  = canvas.offsetWidth;
         H = canvas.height = canvas.offsetHeight;
-        var cols = Math.floor(W / FS);
-        drops = [];
-        for (var i = 0; i < cols; i++) {
-          drops.push(Math.floor(Math.random() * -(H / FS)));
+        init();
+      }
+
+      function Particle() {
+        this.x = Math.random() * W;
+        this.y = Math.random() * H;
+        this.r = Math.random() * 1.5 + 0.3;
+        this.alpha = Math.random() * 0.35 + 0.05;
+        this.vx = (Math.random() - 0.5) * 0.25;
+        this.vy = (Math.random() - 0.5) * 0.25;
+        this.life = Math.random() * 300 + 150;
+        this.maxLife = this.life;
+      }
+
+      function Orb() {
+        this.x = Math.random() * W;
+        this.y = Math.random() * H;
+        this.r = Math.random() * 180 + 80;
+        this.alpha = Math.random() * 0.04 + 0.01;
+        this.vx = (Math.random() - 0.5) * 0.12;
+        this.vy = (Math.random() - 0.5) * 0.12;
+      }
+
+      function init() {
+        particles = [];
+        for (var i = 0; i < 70; i++) {
+          var p = new Particle();
+          p.life = Math.random() * p.maxLife;
+          particles.push(p);
+        }
+        orbs = [];
+        for (var j = 0; j < 6; j++) {
+          orbs.push(new Orb());
         }
       }
 
       function draw() {
-        ctx.fillStyle = 'rgba(0,0,0,0.09)';
-        ctx.fillRect(0, 0, W, H);
-        ctx.font = FS + 'px monospace';
-        for (var i = 0; i < drops.length; i++) {
-          var ch = CHARS[Math.floor(Math.random() * CHARS.length)];
-          var y  = drops[i] * FS;
-          if (y < 0) { drops[i]++; continue; }
-          var alpha = Math.random() * 0.18 + 0.05;
-          ctx.fillStyle = 'rgba(0,220,60,' + alpha + ')';
-          ctx.fillText(ch, i * FS, y);
-          if (y > H && Math.random() > 0.975) {
-            drops[i] = Math.floor(Math.random() * -(H / FS / 2));
-          }
-          drops[i]++;
+        ctx.clearRect(0, 0, W, H);
+
+        /* soft glow orbs */
+        for (var j = 0; j < orbs.length; j++) {
+          var o = orbs[j];
+          o.x += o.vx; o.y += o.vy;
+          if (o.x < -o.r) o.x = W + o.r;
+          if (o.x > W + o.r) o.x = -o.r;
+          if (o.y < -o.r) o.y = H + o.r;
+          if (o.y > H + o.r) o.y = -o.r;
+          var grd = ctx.createRadialGradient(o.x, o.y, 0, o.x, o.y, o.r);
+          grd.addColorStop(0, 'rgba(0,220,65,' + o.alpha + ')');
+          grd.addColorStop(1, 'rgba(0,220,65,0)');
+          ctx.beginPath();
+          ctx.arc(o.x, o.y, o.r, 0, Math.PI * 2);
+          ctx.fillStyle = grd;
+          ctx.fill();
         }
+
+        /* tiny floating particles */
+        for (var i = 0; i < particles.length; i++) {
+          var p = particles[i];
+          p.x += p.vx; p.y += p.vy; p.life--;
+          if (p.life <= 0) {
+            particles[i] = new Particle();
+            continue;
+          }
+          var fade = p.life < 40 ? p.life / 40 : (p.life > p.maxLife - 40 ? (p.maxLife - p.life) / 40 : 1);
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(0,220,65,' + (p.alpha * fade) + ')';
+          ctx.fill();
+        }
+
         requestAnimationFrame(draw);
       }
 
       resize();
       draw();
-      window.addEventListener('resize', resize);
+      window.addEventListener('resize', function() { resize(); });
     })();
 
     /* ── Section break heading slide in ── */
@@ -3065,6 +2928,25 @@
       arrow.style.transform = open ? '' : 'rotate(90deg)';
     }
 
+    /* ── Hero cycling headline ── */
+    (function() {
+      var words = ['AUTOMATED.', 'ACCELERATED.', 'AMPLIFIED.', 'SCALED.', 'UNSTOPPABLE.'];
+      var idx = 0;
+      var el = document.getElementById('hero-cycler');
+      if (!el) return;
+      function cycle() {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(0.25em)';
+        setTimeout(function() {
+          idx = (idx + 1) % words.length;
+          el.textContent = words[idx];
+          el.style.opacity = '1';
+          el.style.transform = 'translateY(0)';
+        }, 380);
+      }
+      setInterval(cycle, 2800);
+    })();
+
     // Contact form submission
     document.getElementById('contact-form').addEventListener('submit', async function(e) {
       e.preventDefault();
@@ -3082,11 +2964,15 @@
       };
 
       try {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 25000);
         const res = await fetch('/api/contact', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(data),
+          signal: controller.signal,
         });
+        clearTimeout(timeout);
         if (res.ok) {
           status.textContent = "Thanks! We'll be in touch shortly.";
           status.style.color = '#00ff41';
