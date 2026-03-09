@@ -87,11 +87,10 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      transition: transform 0.35s cubic-bezier(0.4,0,0.2,1),
-                  background 0.3s;
+      background: rgba(22,22,22,0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
     }
-    #nav.scrolled { background: rgba(22,22,22,0.85); backdrop-filter: blur(12px); }
-    #nav.hidden   { transform: translateY(-100%); }
 
     .nav-logo {
       display: flex;
@@ -1424,6 +1423,8 @@
       transition: border-color 0.3s, background 0.3s;
       position: relative;
       overflow: hidden;
+      text-decoration: none;
+      cursor: pointer;
     }
     .feature-pill::before {
       content: '';
@@ -1489,21 +1490,6 @@
       letter-spacing: 0.08em;
       margin-top: 0.3em;
     }
-    .feature-pill-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4em;
-      font-family: var(--fe);
-      font-size: 0.6em;
-      color: var(--orange);
-      text-decoration: none;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-top: 0.6em;
-      transition: gap 0.2s, opacity 0.2s;
-      opacity: 0.8;
-    }
-    .feature-pill-link:hover { gap: 0.7em; opacity: 1; }
 
     /* ═══ HAMBURGER + MOBILE NAV ═══ */
     #nav-hamburger {
@@ -1583,7 +1569,7 @@
       .nav-links { display: none; }
       #nav-hamburger { display: flex; }
       #nav { padding: 0.6em 1.2em; }
-      #nav.scrolled { background: transparent !important; backdrop-filter: none !important; }
+      #nav { background: rgba(22,22,22,0.85) !important; }
       .nav-logo img { height: 160px !important; max-height: 160px !important; max-width: 320px !important; }
 
       /* Hero */
@@ -1722,10 +1708,9 @@
         <a href="#services">Services <span class="nav-arrow">›</span></a>
         <div class="dropdown">
           <div class="dropdown-inner">
-            <a href="automate.html"><span class="dd-dot"></span>Automate</a>
-            <a href="integrate.html"><span class="dd-dot"></span>Integrate</a>
-            <a href="bespoke-builds.html#web-design"><span class="dd-dot"></span>Web Design</a>
-            <a href="deploy.html"><span class="dd-dot"></span>Deploy</a>
+            <a href="signature-service.html"><span class="dd-dot"></span>AI Assistant</a>
+            <a href="bespoke-builds.html"><span class="dd-dot"></span>Bespoke Builds</a>
+            <a href="ai-platform.html"><span class="dd-dot"></span>AI Platform</a>
           </div>
         </div>
       </div>
@@ -1742,10 +1727,9 @@
     <div id="mobile-nav-inner" onclick="event.stopPropagation()">
       <a href="#" onclick="toggleMobileServices(event)" style="display:flex;justify-content:space-between;align-items:center;">Services <span id="mob-svc-arrow" style="font-size:1.2em;transition:transform 0.2s;">›</span></a>
       <div id="mob-svc-sub" style="display:none;margin-top:0.3em;">
-        <a href="automate.html" onclick="toggleMobileNav()" style="padding-left:2em;border-left:3px solid rgba(0,255,65,0.4);margin-bottom:0.2em;display:block;">Automate</a>
-        <a href="integrate.html" onclick="toggleMobileNav()" style="padding-left:2em;border-left:3px solid rgba(0,255,65,0.4);margin-bottom:0.2em;display:block;">Integrate</a>
-        <a href="bespoke-builds.html#web-design" onclick="toggleMobileNav()" style="padding-left:2em;border-left:3px solid rgba(0,255,65,0.4);margin-bottom:0.2em;display:block;">Web Design</a>
-        <a href="deploy.html" onclick="toggleMobileNav()" style="padding-left:2em;border-left:3px solid rgba(0,255,65,0.4);display:block;">Deploy</a>
+        <a href="signature-service.html" onclick="toggleMobileNav()" style="padding-left:2em;border-left:3px solid rgba(0,255,65,0.4);margin-bottom:0.2em;display:block;">AI Assistant</a>
+        <a href="bespoke-builds.html" onclick="toggleMobileNav()" style="padding-left:2em;border-left:3px solid rgba(0,255,65,0.4);margin-bottom:0.2em;display:block;">Bespoke Builds</a>
+        <a href="ai-platform.html" onclick="toggleMobileNav()" style="padding-left:2em;border-left:3px solid rgba(0,255,65,0.4);display:block;">AI Platform</a>
       </div>
       <a href="process.html" onclick="toggleMobileNav()">Process</a>
       <a href="about.html" onclick="toggleMobileNav()">About</a>
@@ -1795,7 +1779,7 @@
     <p class="feature-spot-sub reveal">Your all-in-one AI business assistant — handling quotes, invoices, review requests, job management, voice automation, and 24/7 customer enquiries. One system built entirely around how you work.</p>
     <div class="feature-pills">
 
-      <div class="feature-pill reveal">
+      <a href="signature-service.html#auto-quotes" class="feature-pill reveal">
         <div class="feature-pill-num">01</div>
         <div class="feature-pill-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="#ff6436" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -1810,10 +1794,9 @@
         <div class="feature-pill-stat">&lt; 2 min
           <div class="feature-pill-stat-label">Quote delivered to lead</div>
         </div>
-        <a href="signature-service.html#auto-quotes" class="feature-pill-link">Learn more →</a>
-      </div>
+      </a>
 
-      <div class="feature-pill reveal" style="transition-delay:0.12s">
+      <a href="signature-service.html#auto-invoices" class="feature-pill reveal" style="transition-delay:0.12s">
         <div class="feature-pill-num">02</div>
         <div class="feature-pill-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="#ff6436" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -1828,10 +1811,9 @@
         <div class="feature-pill-stat">100%
           <div class="feature-pill-stat-label">Invoices sent on time</div>
         </div>
-        <a href="signature-service.html#auto-invoices" class="feature-pill-link">Learn more →</a>
-      </div>
+      </a>
 
-      <div class="feature-pill reveal" style="transition-delay:0.24s">
+      <a href="signature-service.html#google-reviews" class="feature-pill reveal" style="transition-delay:0.24s">
         <div class="feature-pill-num">03</div>
         <div class="feature-pill-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="#ff6436" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -1846,10 +1828,9 @@
         <div class="feature-pill-stat">3× more
           <div class="feature-pill-stat-label">Google reviews collected</div>
         </div>
-        <a href="signature-service.html#google-reviews" class="feature-pill-link">Learn more →</a>
-      </div>
+      </a>
 
-      <div class="feature-pill reveal" style="transition-delay:0.36s">
+      <a href="signature-service.html#job-management" class="feature-pill reveal" style="transition-delay:0.36s">
         <div class="feature-pill-num">04</div>
         <div class="feature-pill-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="#ff6436" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -1866,10 +1847,9 @@
         <div class="feature-pill-stat">Zero
           <div class="feature-pill-stat-label">Jobs falling through the cracks</div>
         </div>
-        <a href="signature-service.html#job-management" class="feature-pill-link">Learn more →</a>
-      </div>
+      </a>
 
-      <div class="feature-pill reveal" style="transition-delay:0.48s">
+      <a href="signature-service.html#voice-automation" class="feature-pill reveal" style="transition-delay:0.48s">
         <div class="feature-pill-num">05</div>
         <div class="feature-pill-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="#ff6436" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -1884,10 +1864,9 @@
         <div class="feature-pill-stat">24/7
           <div class="feature-pill-stat-label">Call handling, no staff needed</div>
         </div>
-        <a href="signature-service.html#voice-automation" class="feature-pill-link">Learn more →</a>
-      </div>
+      </a>
 
-      <div class="feature-pill reveal" style="transition-delay:0.6s">
+      <a href="signature-service.html#ai-assistant" class="feature-pill reveal" style="transition-delay:0.6s">
         <div class="feature-pill-num">06</div>
         <div class="feature-pill-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="#ff6436" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -1900,8 +1879,7 @@
         <div class="feature-pill-stat">Always on
           <div class="feature-pill-stat-label">No downtime, no days off</div>
         </div>
-        <a href="signature-service.html#ai-assistant" class="feature-pill-link">Learn more →</a>
-      </div>
+      </a>
 
     </div>
   </section>
@@ -1950,7 +1928,7 @@
   <section class="services" id="services">
     <div class="feature-pills">
 
-      <div class="feature-pill reveal">
+      <a href="ai-platform.html#automate" class="feature-pill reveal">
         <div class="feature-pill-num">01</div>
         <div class="feature-pill-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="#ff6436" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -1964,10 +1942,9 @@
         <div class="feature-pill-stat">38h/wk
           <div class="feature-pill-stat-label">Avg. admin time saved</div>
         </div>
-        <a href="automate.html" class="feature-pill-link">Explore Automate →</a>
-      </div>
+      </a>
 
-      <div class="feature-pill reveal" style="transition-delay:0.12s">
+      <a href="ai-platform.html#integrate" class="feature-pill reveal" style="transition-delay:0.12s">
         <div class="feature-pill-num">02</div>
         <div class="feature-pill-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="#ff6436" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -1985,10 +1962,9 @@
         <div class="feature-pill-stat">200+
           <div class="feature-pill-stat-label">Integrations supported</div>
         </div>
-        <a href="integrate.html" class="feature-pill-link">Explore Integrate →</a>
-      </div>
+      </a>
 
-      <div class="feature-pill reveal" style="transition-delay:0.24s">
+      <a href="ai-platform.html#deploy" class="feature-pill reveal" style="transition-delay:0.24s">
         <div class="feature-pill-num">03</div>
         <div class="feature-pill-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="#ff6436" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -2001,10 +1977,9 @@
         <div class="feature-pill-stat">7 days
           <div class="feature-pill-stat-label">Avg. time to first deploy</div>
         </div>
-        <a href="deploy.html" class="feature-pill-link">Explore Deploy →</a>
-      </div>
+      </a>
 
-      <div class="feature-pill reveal" style="transition-delay:0.36s">
+      <a href="bespoke-builds.html#web-design" class="feature-pill reveal" style="transition-delay:0.36s">
         <div class="feature-pill-num">04</div>
         <div class="feature-pill-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="#ff6436" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -2018,8 +1993,7 @@
         <div class="feature-pill-stat">Weeks
           <div class="feature-pill-stat-label">From brief to live site</div>
         </div>
-        <a href="#contact" class="feature-pill-link">Start a project →</a>
-      </div>
+      </a>
 
     </div>
   </section>
@@ -2031,7 +2005,7 @@
     <p class="feature-spot-sub reveal">Every system we build is engineered from scratch around your exact requirements. If there's a problem in your business that can be solved with intelligence, we'll build the AI to solve it.</p>
     <div class="feature-pills">
 
-      <div class="feature-pill reveal">
+      <a href="bespoke-builds.html#ai-chatbot" class="feature-pill reveal">
         <div class="feature-pill-num">01</div>
         <div class="feature-pill-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="#ff6436" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -2046,10 +2020,9 @@
         <div class="feature-pill-stat">90%
           <div class="feature-pill-stat-label">Queries handled automatically</div>
         </div>
-        <a href="bespoke-builds.html#ai-chatbot" class="feature-pill-link">Learn more →</a>
-      </div>
+      </a>
 
-      <div class="feature-pill reveal" style="transition-delay:0.12s">
+      <a href="bespoke-builds.html#lead-intelligence" class="feature-pill reveal" style="transition-delay:0.12s">
         <div class="feature-pill-num">02</div>
         <div class="feature-pill-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="#ff6436" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -2064,10 +2037,9 @@
         <div class="feature-pill-stat">5×
           <div class="feature-pill-stat-label">Faster lead-to-conversation</div>
         </div>
-        <a href="bespoke-builds.html#lead-intelligence" class="feature-pill-link">Learn more →</a>
-      </div>
+      </a>
 
-      <div class="feature-pill reveal" style="transition-delay:0.24s">
+      <a href="bespoke-builds.html#document-processing" class="feature-pill reveal" style="transition-delay:0.24s">
         <div class="feature-pill-num">03</div>
         <div class="feature-pill-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="#ff6436" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -2083,13 +2055,12 @@
         <div class="feature-pill-stat">Zero
           <div class="feature-pill-stat-label">Manual data entry required</div>
         </div>
-        <a href="bespoke-builds.html#document-processing" class="feature-pill-link">Learn more →</a>
-      </div>
+      </a>
 
     </div>
     <div class="feature-pills" style="margin-top:1.5em">
 
-      <div class="feature-pill reveal" style="transition-delay:0.36s">
+      <a href="bespoke-builds.html#business-intelligence" class="feature-pill reveal" style="transition-delay:0.36s">
         <div class="feature-pill-num">04</div>
         <div class="feature-pill-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="#ff6436" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -2103,10 +2074,9 @@
         <div class="feature-pill-stat">Daily
           <div class="feature-pill-stat-label">Automated reports delivered</div>
         </div>
-        <a href="bespoke-builds.html#business-intelligence" class="feature-pill-link">Learn more →</a>
-      </div>
+      </a>
 
-      <div class="feature-pill reveal" style="transition-delay:0.48s">
+      <a href="bespoke-builds.html#workflow-orchestration" class="feature-pill reveal" style="transition-delay:0.48s">
         <div class="feature-pill-num">05</div>
         <div class="feature-pill-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="#ff6436" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -2118,10 +2088,9 @@
         <div class="feature-pill-stat">100+
           <div class="feature-pill-stat-label">Trigger conditions supported</div>
         </div>
-        <a href="bespoke-builds.html#workflow-orchestration" class="feature-pill-link">Learn more →</a>
-      </div>
+      </a>
 
-      <div class="feature-pill reveal" style="transition-delay:0.6s">
+      <a href="bespoke-builds.html#web-design" class="feature-pill reveal" style="transition-delay:0.6s">
         <div class="feature-pill-num">06</div>
         <div class="feature-pill-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="#ff6436" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -2135,8 +2104,7 @@
         <div class="feature-pill-stat">Weeks
           <div class="feature-pill-stat-label">From brief to live site</div>
         </div>
-        <a href="bespoke-builds.html#web-design" class="feature-pill-link">Learn more →</a>
-      </div>
+      </a>
 
     </div>
   </section>
@@ -2231,17 +2199,6 @@
       el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
       el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
     });
-
-    /* ── Nav hide / show on scroll ── */
-    const nav = document.getElementById('nav');
-    let lastY = 0;
-    window.addEventListener('scroll', () => {
-      const y = window.scrollY;
-      if (y > 80) nav.classList.add('scrolled'); else nav.classList.remove('scrolled');
-      if (y > lastY && y > 120) nav.classList.add('hidden');
-      else nav.classList.remove('hidden');
-      lastY = y;
-    }, { passive: true });
 
     /* ── Hero text blur-in ── */
     gsap.from('.hero-eyebrow', { opacity: 0, y: 10, duration: 0.8, ease: 'power2.out', delay: 0.2 });

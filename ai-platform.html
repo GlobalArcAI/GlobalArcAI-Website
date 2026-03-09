@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Platform | Global Arc AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black:  #161616;
+      --green:  #00ff41;
+      --white:  #ffffff;
+      --grey:   #a2a2a2;
+      --orange: #ff6436;
+      --fh: Impact, "Arial Narrow", sans-serif;
+      --fe: "IBM Plex Mono", monospace;
+      --fp: Arial, sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+    body { background: var(--black); color: var(--white); font-family: var(--fp); line-height: 1.5; }
+
+    /* ── NAV ── */
+    #nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 4px 32px;
+      background: rgba(22,22,22,0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .nav-logo { display: flex; align-items: center; text-decoration: none; }
+    .nav-links { display: flex; gap: 24px; align-items: center; list-style: none; }
+    .nav-links a { font-family: var(--fe); font-size: 9px; color: rgba(255,255,255,0.55); text-decoration: none; text-transform: uppercase; letter-spacing: 0.08em; white-space: nowrap; transition: color 0.2s; }
+    .nav-links a:hover { color: #fff; }
+    .nav-cta { font-family: var(--fe); font-size: 9px; color: #161616 !important; background: #fff; padding: 7px 14px; border-radius: 24px; text-decoration: none; letter-spacing: 0.06em; text-transform: uppercase; transition: background 0.2s, color 0.2s; }
+    .nav-cta:hover { background: var(--green); color: #fff !important; }
+    .nav-item { position: relative; display: flex; align-items: center; }
+    .nav-item > a { display: flex; align-items: center; gap: 4px; }
+    .nav-arrow { font-size: 0.85em; opacity: 0.5; transition: transform 0.2s; display: inline-block; }
+    .nav-item:hover .nav-arrow { transform: rotate(90deg); opacity: 1; }
+    .dropdown { position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(5px); min-width: 168px; padding-top: 10px; opacity: 0; visibility: hidden; pointer-events: none; transition: opacity 0.18s, transform 0.18s, visibility 0.18s; z-index: 600; }
+    .dropdown-inner { background: rgba(18,18,18,0.97); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 5px 0; position: relative; }
+    .dropdown-inner::before { content: ''; position: absolute; top: -5px; left: 50%; transform: translateX(-50%); border: 5px solid transparent; border-bottom-color: rgba(255,255,255,0.12); pointer-events: none; }
+    .nav-item:hover .dropdown { opacity: 1; visibility: visible; pointer-events: all; transform: translateX(-50%) translateY(0); }
+    .dropdown-inner a { display: flex; align-items: center; gap: 9px; padding: 9px 14px; font-family: var(--fe); font-size: 8px; color: rgba(255,255,255,0.55); text-decoration: none; text-transform: uppercase; letter-spacing: 0.08em; transition: color 0.15s, background 0.15s; border-radius: 4px; margin: 1px 4px; }
+    .dropdown-inner a:hover { color: #fff; background: rgba(255,255,255,0.05); }
+    .dd-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
+    #nav-hamburger { display: none; flex-direction: column; gap: 4px; background: none; border: none; cursor: pointer; padding: 6px; z-index: 600; }
+    #nav-hamburger span { display: block; width: 20px; height: 2px; background: #fff; border-radius: 2px; transition: transform 0.25s, opacity 0.25s; }
+    #nav-hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+    #nav-hamburger.open span:nth-child(2) { opacity: 0; }
+    #nav-hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+    #mobile-nav { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 490; backdrop-filter: blur(4px); }
+    #mobile-nav.open { display: flex; align-items: flex-start; justify-content: flex-end; }
+    #mobile-nav-inner { background: #111; width: 75vw; max-width: 280px; min-height: 100%; padding: 80px 24px 32px; display: flex; flex-direction: column; gap: 3px; border-left: 1px solid rgba(255,255,255,0.08); }
+    #mobile-nav-inner a { font-family: var(--fe); font-size: 13px; color: rgba(255,255,255,0.65); text-decoration: none; text-transform: uppercase; letter-spacing: 0.08em; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.06); transition: color 0.2s; }
+    #mobile-nav-inner a:hover { color: #fff; }
+    .mobile-nav-cta { margin-top: 16px; background: var(--green) !important; color: #000 !important; border-radius: 32px; padding: 12px 24px !important; text-align: center; border: none !important; }
+
+    /* ── PAGE HERO ── */
+    .page-hero {
+      padding: 10rem 2.5rem 5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      max-width: 900px;
+    }
+    .page-eyebrow {
+      font-family: var(--fe); font-size: 0.7rem; letter-spacing: 0.25em;
+      color: var(--green); text-transform: uppercase; margin-bottom: 1.2rem;
+    }
+    .page-title {
+      font-family: var(--fh); font-size: clamp(3rem, 6vw, 5.5rem);
+      font-weight: 900; line-height: 0.88; text-transform: uppercase;
+      letter-spacing: -0.02em; color: var(--white); margin-bottom: 1.5rem;
+    }
+    .page-title span { color: var(--green); }
+    .page-intro {
+      font-family: var(--fe); font-size: 0.95rem; color: rgba(255,255,255,0.55);
+      line-height: 1.75; max-width: 620px; letter-spacing: 0.02em;
+    }
+
+    /* ── ANCHOR NAV ── */
+    .anchor-nav {
+      display: flex; flex-wrap: wrap; gap: 0.6rem;
+      padding: 2rem 2.5rem; border-bottom: 1px solid rgba(255,255,255,0.07);
+      position: sticky; top: 140px; z-index: 50;
+      background: rgba(22,22,22,0.95); backdrop-filter: blur(12px);
+    }
+    .anchor-nav a {
+      font-family: var(--fe); font-size: 0.62rem; letter-spacing: 0.1em;
+      text-transform: uppercase; color: rgba(255,255,255,0.5);
+      text-decoration: none; padding: 0.4rem 0.9rem;
+      border: 1px solid rgba(255,255,255,0.12); border-radius: 2rem;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .anchor-nav a:hover { color: var(--green); border-color: var(--green); }
+
+    /* ── DETAIL SECTION ── */
+    .detail-section {
+      padding: 6rem 2.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      max-width: 1100px;
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: 4rem;
+      align-items: start;
+    }
+    .detail-left { position: sticky; top: 200px; }
+    .detail-num {
+      font-family: var(--fh); font-size: 6rem; font-weight: 900;
+      color: rgba(0,255,65,0.08); line-height: 1; margin-bottom: 0.5rem;
+      letter-spacing: -0.04em;
+    }
+    .detail-tag {
+      font-family: var(--fe); font-size: 0.62rem; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--green); margin-bottom: 1rem;
+    }
+    .detail-title {
+      font-family: var(--fh); font-size: clamp(2rem, 3.5vw, 3.2rem);
+      font-weight: 900; line-height: 0.9; text-transform: uppercase;
+      letter-spacing: -0.015em; color: var(--white); margin-bottom: 1.5rem;
+    }
+    .detail-stat-box {
+      margin-top: 2rem; padding: 1.5rem;
+      border: 1px solid rgba(0,255,65,0.18);
+      border-radius: 0.75rem;
+      background: rgba(0,255,65,0.03);
+    }
+    .detail-stat-val {
+      font-family: var(--fh); font-size: 3rem; color: var(--green);
+      font-weight: 900; line-height: 1;
+    }
+    .detail-stat-label { font-family: var(--fe); font-size: 0.65rem; color: rgba(255,255,255,0.45); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 0.4rem; }
+    .detail-right p {
+      font-size: 1rem; color: rgba(255,255,255,0.7); line-height: 1.75;
+      margin-bottom: 1.4rem;
+    }
+
+    /* ── HOW IT WORKS ── */
+    .how-title {
+      font-family: var(--fe); font-size: 0.65rem; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--orange); margin: 2.5rem 0 1.2rem;
+    }
+    .steps { display: flex; flex-direction: column; gap: 1rem; }
+    .step-item {
+      display: flex; gap: 1.2rem; align-items: flex-start;
+      padding: 1.2rem; background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07); border-radius: 0.6rem;
+    }
+    .step-n {
+      font-family: var(--fh); font-size: 1.4rem; color: var(--green);
+      font-weight: 900; line-height: 1; flex-shrink: 0; min-width: 1.8rem;
+    }
+    .step-text strong { display: block; font-family: var(--fe); font-size: 0.75rem; color: var(--white); letter-spacing: 0.06em; margin-bottom: 0.3rem; }
+    .step-text span { font-size: 0.88rem; color: rgba(255,255,255,0.55); line-height: 1.6; }
+
+    /* ── BENEFITS ── */
+    .benefits {
+      margin-top: 2rem; display: flex; flex-direction: column; gap: 0.6rem;
+    }
+    .benefit {
+      display: flex; align-items: flex-start; gap: 0.8rem;
+      font-size: 0.9rem; color: rgba(255,255,255,0.65); line-height: 1.5;
+    }
+    .benefit::before { content: '→'; color: var(--green); flex-shrink: 0; font-family: var(--fe); }
+
+    /* ── CTA SECTION ── */
+    .page-cta {
+      padding: 6rem 2.5rem;
+      text-align: center;
+      border-top: 1px solid rgba(255,255,255,0.07);
+    }
+    .page-cta-eyebrow {
+      font-family: var(--fe); font-size: 0.7rem; letter-spacing: 0.2em;
+      color: var(--green); text-transform: uppercase; margin-bottom: 1rem;
+    }
+    .page-cta-heading {
+      font-family: var(--fh); font-size: clamp(2.5rem, 5vw, 4.5rem);
+      font-weight: 900; text-transform: uppercase; color: var(--white);
+      letter-spacing: -0.02em; margin-bottom: 1.5rem;
+    }
+    .page-cta-btn {
+      display: inline-flex; align-items: center; gap: 0.6em;
+      background: var(--green); color: #000; padding: 0.85rem 2.5rem;
+      border-radius: 2rem; font-family: var(--fe); font-size: 0.75rem;
+      letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .page-cta-btn:hover { opacity: 0.88; transform: scale(1.03); }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 2rem 2.5rem; border-top: 1px solid rgba(255,255,255,0.07);
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 1rem;
+    }
+    footer p { font-family: var(--fe); font-size: 0.65rem; color: rgba(255,255,255,0.3); letter-spacing: 0.08em; }
+    footer a { font-family: var(--fe); font-size: 0.65rem; color: rgba(255,255,255,0.3); text-decoration: none; }
+    footer a:hover { color: var(--green); }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      #nav-hamburger { display: flex; }
+      #nav { padding: 6px 19px; }
+      .nav-logo img { height: 100px !important; max-height: 100px !important; max-width: 280px !important; }
+      .page-hero { padding: 7rem 1.5rem 3rem; }
+      .anchor-nav { padding: 1rem 1.5rem; top: 108px; }
+      .detail-section { grid-template-columns: 1fr; gap: 2.5rem; padding: 4rem 1.5rem; }
+      .detail-left { position: static; }
+      .page-cta { padding: 4rem 1.5rem; }
+      footer { padding: 1.5rem 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="nav">
+    <a href="index.html" class="nav-logo">
+      <img src="https://images.squarespace-cdn.com/content/v1/69813201daddd4685f5aa193/4d1510db-de6f-4293-beb1-f3de89c83a89/ChatGPT+Image+Feb+10%2C+2026%2C+11_27_50+AM.png"
+           height="200" alt="Global Arc AI"
+           style="object-fit:contain; display:block; max-width:880px; max-height:200px; filter: brightness(0) invert(1);">
+    </a>
+    <div class="nav-links" id="nav-links">
+      <div class="nav-item">
+        <a href="index.html#services">Services <span class="nav-arrow">›</span></a>
+        <div class="dropdown">
+          <div class="dropdown-inner">
+            <a href="signature-service.html"><span class="dd-dot"></span>AI Assistant</a>
+            <a href="bespoke-builds.html"><span class="dd-dot"></span>Bespoke Builds</a>
+            <a href="ai-platform.html"><span class="dd-dot"></span>AI Platform</a>
+          </div>
+        </div>
+      </div>
+      <a href="process.html">Process</a>
+      <a href="about.html">About</a>
+      <a href="index.html#contact" class="nav-cta">Get started</a>
+    </div>
+    <button id="nav-hamburger" aria-label="Menu" onclick="toggleMobileNav()">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+  <!-- Mobile nav overlay -->
+  <div id="mobile-nav" onclick="toggleMobileNav()">
+    <div id="mobile-nav-inner" onclick="event.stopPropagation()">
+      <a href="#" onclick="toggleMobileServices(event)" style="display:flex;justify-content:space-between;align-items:center;">Services <span id="mob-svc-arrow" style="font-size:1.2em;transition:transform 0.2s;">›</span></a>
+      <div id="mob-svc-sub" style="display:none;margin-top:0.3em;">
+        <a href="signature-service.html" onclick="toggleMobileNav()" style="padding-left:2em;border-left:3px solid rgba(0,255,65,0.4);margin-bottom:0.2em;display:block;">AI Assistant</a>
+        <a href="bespoke-builds.html" onclick="toggleMobileNav()" style="padding-left:2em;border-left:3px solid rgba(0,255,65,0.4);margin-bottom:0.2em;display:block;">Bespoke Builds</a>
+        <a href="ai-platform.html" onclick="toggleMobileNav()" style="padding-left:2em;border-left:3px solid rgba(0,255,65,0.4);display:block;">AI Platform</a>
+      </div>
+      <a href="process.html" onclick="toggleMobileNav()">Process</a>
+      <a href="about.html" onclick="toggleMobileNav()">About</a>
+      <a href="index.html#contact" class="mobile-nav-cta" onclick="toggleMobileNav()">Get started</a>
+    </div>
+  </div>
+
+  <!-- PAGE HERO -->
+  <div class="page-hero">
+    <p class="page-eyebrow">AI Platform</p>
+    <h1 class="page-title">AUTOMATE.<br>INTEGRATE.<br><span>DEPLOY</span>.</h1>
+    <p class="page-intro">Three interconnected capabilities that form the backbone of every AI system we build. We automate your workflows, integrate your tools, and deploy everything end-to-end — so your business runs smarter from day one.</p>
+  </div>
+
+  <!-- ANCHOR NAV -->
+  <nav class="anchor-nav">
+    <a href="#automate">01 Automate</a>
+    <a href="#integrate">02 Integrate</a>
+    <a href="#deploy">03 Deploy</a>
+  </nav>
+
+  <!-- 01 AUTOMATE -->
+  <section class="detail-section" id="automate">
+    <div class="detail-left">
+      <div class="detail-num">01</div>
+      <div class="detail-tag">AI Platform</div>
+      <h2 class="detail-title">WORKFLOW<br>AUTOMATION</h2>
+      <div class="detail-stat-box">
+        <div class="detail-stat-val">38h/wk</div>
+        <div class="detail-stat-label">Average admin time saved</div>
+      </div>
+    </div>
+    <div class="detail-right">
+      <p>We replace every repetitive manual task in your business with intelligent AI workflows — custom-built to match exactly how your business operates. From customer onboarding to internal reporting, if it's repeatable, we automate it.</p>
+      <p>Unlike off-the-shelf tools that force you to change how you work, our automations are built around your existing processes. Your team keeps doing what they're good at — the AI handles everything else, running 24/7 without error or delay.</p>
+      <p>The result is a business that moves faster, makes fewer mistakes, and scales without proportional headcount growth. Every hour your AI runs is an hour your team spends on higher-value work.</p>
+
+      <div class="how-title">How it works</div>
+      <div class="steps">
+        <div class="step-item"><span class="step-n">1</span><div class="step-text"><strong>Process mapping</strong><span>We audit your existing workflows, identifying every manual task, decision point, and handoff that can be automated.</span></div></div>
+        <div class="step-item"><span class="step-n">2</span><div class="step-text"><strong>Automation design</strong><span>Each workflow is designed as an AI-powered sequence — with logic, conditions, and error handling built in from the start.</span></div></div>
+        <div class="step-item"><span class="step-n">3</span><div class="step-text"><strong>Build and test</strong><span>Automations are built, tested against real scenarios, and refined until they perform reliably across all edge cases.</span></div></div>
+        <div class="step-item"><span class="step-n">4</span><div class="step-text"><strong>Live and monitored</strong><span>Once deployed, your automations run continuously with real-time monitoring — and we handle any issues that arise.</span></div></div>
+      </div>
+
+      <div class="benefits">
+        <div class="benefit">Eliminates repetitive manual tasks across every department</div>
+        <div class="benefit">Built around your exact processes — not a generic template</div>
+        <div class="benefit">Runs 24/7 with no human supervision required</div>
+        <div class="benefit">Scales with your business without additional headcount</div>
+        <div class="benefit">Reduces errors from manual data entry and handoffs</div>
+        <div class="benefit">Full audit trail of every automated action taken</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 INTEGRATE -->
+  <section class="detail-section" id="integrate">
+    <div class="detail-left">
+      <div class="detail-num">02</div>
+      <div class="detail-tag">AI Platform</div>
+      <h2 class="detail-title">SYSTEMS<br>INTEGRATION</h2>
+      <div class="detail-stat-box">
+        <div class="detail-stat-val">200+</div>
+        <div class="detail-stat-label">Integrations supported</div>
+      </div>
+    </div>
+    <div class="detail-right">
+      <p>Your CRM, calendar, accounting software, communication tools, and job management system all hold valuable data — but if they don't talk to each other, that data is trapped. We build intelligent bridges between your platforms so everything flows seamlessly.</p>
+      <p>When a lead is created in your CRM, your calendar books automatically. When a job is completed, your accounting system is updated. When a customer pays, your team is notified. Every system stays in sync without manual updating — because your AI handles the connections.</p>
+      <p>We work with every major platform and can build custom integrations for tools that don't have native connectors. If you use it, we can connect it.</p>
+
+      <div class="how-title">How it works</div>
+      <div class="steps">
+        <div class="step-item"><span class="step-n">1</span><div class="step-text"><strong>Platform audit</strong><span>We map every tool your business uses, identify where data lives, and find the critical connection points that need to be joined.</span></div></div>
+        <div class="step-item"><span class="step-n">2</span><div class="step-text"><strong>Integration architecture</strong><span>We design a data flow architecture that connects your platforms intelligently — not just passing data, but transforming it into the right format for each system.</span></div></div>
+        <div class="step-item"><span class="step-n">3</span><div class="step-text"><strong>Build and validate</strong><span>Integrations are built using APIs, webhooks, and custom middleware — then validated with real data to ensure accuracy and reliability.</span></div></div>
+        <div class="step-item"><span class="step-n">4</span><div class="step-text"><strong>Ongoing sync</strong><span>All integrations are monitored for failures or data mismatches. We handle maintenance as your tools update and your business evolves.</span></div></div>
+      </div>
+
+      <div class="benefits">
+        <div class="benefit">Connects your CRM, calendar, accounting, and operations tools</div>
+        <div class="benefit">Data flows automatically between platforms — no manual entry</div>
+        <div class="benefit">Works with HubSpot, Salesforce, Xero, QuickBooks, and 200+ others</div>
+        <div class="benefit">Custom connectors built for tools without native integrations</div>
+        <div class="benefit">Real-time sync keeps every platform accurate and up-to-date</div>
+        <div class="benefit">Error monitoring catches and flags sync failures before they cause problems</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 DEPLOY -->
+  <section class="detail-section" id="deploy">
+    <div class="detail-left">
+      <div class="detail-num">03</div>
+      <div class="detail-tag">AI Platform</div>
+      <h2 class="detail-title">AI<br>DEPLOYMENT</h2>
+      <div class="detail-stat-box">
+        <div class="detail-stat-val">7 days</div>
+        <div class="detail-stat-label">Average time to first deploy</div>
+      </div>
+    </div>
+    <div class="detail-right">
+      <p>Building an AI system is only half the job. Getting it live, stable, and performing in a real business environment is where most AI projects fail. We handle every stage of deployment — from infrastructure setup to team onboarding — so your AI works from day one.</p>
+      <p>Every system we deploy is tested against real-world scenarios before it goes live. We anticipate edge cases, validate outputs, and build in fallback behaviour so your business is never left exposed if something unexpected happens.</p>
+      <p>After launch, we monitor performance continuously, provide ongoing support, and iterate on the system as your business grows. This isn't a one-time handover — it's a long-term partnership built around making your AI work harder over time.</p>
+
+      <div class="how-title">How it works</div>
+      <div class="steps">
+        <div class="step-item"><span class="step-n">1</span><div class="step-text"><strong>Infrastructure setup</strong><span>We configure the hosting, API connections, security, and environment your AI system needs to run reliably at production scale.</span></div></div>
+        <div class="step-item"><span class="step-n">2</span><div class="step-text"><strong>Pre-launch testing</strong><span>Every system is stress-tested against real scenarios — including edge cases, high volumes, and unexpected inputs — before going live.</span></div></div>
+        <div class="step-item"><span class="step-n">3</span><div class="step-text"><strong>Launch and handover</strong><span>We deploy the system, brief your team on how to use it, and provide documentation covering everything they need to know.</span></div></div>
+        <div class="step-item"><span class="step-n">4</span><div class="step-text"><strong>Monitoring and support</strong><span>Post-launch, we monitor performance, respond to issues, and proactively improve the system as usage data reveals opportunities.</span></div></div>
+      </div>
+
+      <div class="benefits">
+        <div class="benefit">End-to-end deployment — infrastructure, testing, and launch handled</div>
+        <div class="benefit">Real-world testing before go-live, including edge cases and high load</div>
+        <div class="benefit">Average 7 days from final build to live production system</div>
+        <div class="benefit">Team onboarding and full documentation included</div>
+        <div class="benefit">Ongoing monitoring with proactive performance improvements</div>
+        <div class="benefit">Long-term support partnership — not a one-time handover</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="page-cta">
+    <p class="page-cta-eyebrow">Ready to build?</p>
+    <h2 class="page-cta-heading">LET'S GET TO WORK</h2>
+    <a href="index.html#contact" class="page-cta-btn">Book a free discovery call →</a>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2025 Global Arc AI. All rights reserved.</p>
+    <a href="index.html">← Back to home</a>
+  </footer>
+
+  <script>
+    function toggleMobileNav() {
+      document.getElementById('mobile-nav').classList.toggle('open');
+      document.getElementById('nav-hamburger').classList.toggle('open');
+    }
+    function toggleMobileServices(e) {
+      e.preventDefault();
+      var sub = document.getElementById('mob-svc-sub');
+      var arrow = document.getElementById('mob-svc-arrow');
+      var open = sub.style.display !== 'none';
+      sub.style.display = open ? 'none' : 'block';
+      arrow.style.transform = open ? '' : 'rotate(90deg)';
+    }
+  </script>
+
+</body>
+</html>
