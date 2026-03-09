@@ -87,10 +87,12 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      transition: transform 0.35s cubic-bezier(0.4,0,0.2,1),
-                  background 0.3s;
+      background: rgba(22,22,22,0.9);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
     }
-    #nav.scrolled { background: rgba(22,22,22,0.85); backdrop-filter: blur(12px); }
     #nav.hidden   { transform: translateY(-100%); }
 
     .nav-logo {
@@ -1722,9 +1724,8 @@
         <a href="#services">Services <span class="nav-arrow">›</span></a>
         <div class="dropdown">
           <div class="dropdown-inner">
-            <a href="automate.html"><span class="dd-dot"></span>Automate</a>
-            <a href="integrate.html"><span class="dd-dot"></span>Integrate</a>
-            <a href="deploy.html"><span class="dd-dot"></span>Deploy</a>
+            <a href="signature-service.html"><span class="dd-dot"></span>Signature Service</a>
+            <a href="bespoke-builds.html"><span class="dd-dot"></span>Bespoke Builds</a>
           </div>
         </div>
       </div>
@@ -1741,12 +1742,11 @@
     <div id="mobile-nav-inner" onclick="event.stopPropagation()">
       <a href="#" onclick="toggleMobileServices(event)" style="display:flex;justify-content:space-between;align-items:center;">Services <span id="mob-svc-arrow" style="font-size:1.2em;transition:transform 0.2s;">›</span></a>
       <div id="mob-svc-sub" style="display:none;margin-top:0.3em;">
-        <a href="automate.html" style="padding-left:2em;border-left:3px solid rgba(0,255,65,0.4);margin-bottom:0.2em;display:block;">Automate</a>
-        <a href="integrate.html" style="padding-left:2em;border-left:3px solid rgba(0,255,65,0.4);margin-bottom:0.2em;display:block;">Integrate</a>
-        <a href="deploy.html" style="padding-left:2em;border-left:3px solid rgba(0,255,65,0.4);display:block;">Deploy</a>
+        <a href="signature-service.html" onclick="toggleMobileNav()" style="padding-left:2em;border-left:3px solid rgba(0,255,65,0.4);margin-bottom:0.2em;display:block;">Signature Service</a>
+        <a href="bespoke-builds.html" onclick="toggleMobileNav()" style="padding-left:2em;border-left:3px solid rgba(0,255,65,0.4);display:block;">Bespoke Builds</a>
       </div>
       <a href="process.html" onclick="toggleMobileNav()">Process</a>
-      <a href="about.html">About</a>
+      <a href="about.html" onclick="toggleMobileNav()">About</a>
       <a href="#contact" class="mobile-nav-cta" onclick="toggleMobileNav()">Get started</a>
     </div>
   </div>
@@ -2328,7 +2328,7 @@
 
       var scene    = new THREE.Scene();
       var camera   = new THREE.PerspectiveCamera(60, W / H, 0.1, 2000);
-      camera.position.z = 28;
+      camera.position.z = W < 768 ? 48 : 28;
 
       var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
       renderer.setSize(W, H, false);
@@ -2376,6 +2376,7 @@
         W = canvas.offsetWidth;
         H = canvas.offsetHeight;
         camera.aspect = W / H;
+        camera.position.z = W < 768 ? 48 : 28;
         camera.updateProjectionMatrix();
         renderer.setSize(W, H, false);
       });
