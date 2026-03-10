@@ -103,15 +103,24 @@ app.post('/api/contact', async (req, res) => {
   }
 
   try {
-    const response = await fetch(process.env.APPS_SCRIPT_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, email, company, message }),
-      redirect: 'follow',
+    const body = JSON.stringify({ name, email, company, message });
+    const headers = { 'Content-Type': 'application/json' };
+
+    // Apps Script redirects POST → must follow manually or fetch silently switches to GET
+    let response = await fetch(process.env.APPS_SCRIPT_URL, {
+      method: 'POST', headers, body, redirect: 'manual',
     });
 
+    if (response.status >= 300 && response.status < 400) {
+      const location = response.headers.get('location');
+      console.log('Following redirect to:', location);
+      response = await fetch(location, { method: 'POST', headers, body });
+    }
+
+    const text = await response.text();
+    console.log('Apps Script response:', response.status, text);
+
     if (!response.ok) {
-      console.error('Apps Script error:', response.status);
       return res.status(500).json({ error: 'Failed to send email', code: response.status });
     }
 
