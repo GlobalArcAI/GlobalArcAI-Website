@@ -55,9 +55,8 @@ app.post('/api/chat', async (req, res) => {
 
   try {
     const stream = client.messages.stream({
-      model: 'claude-opus-4-6',
+      model: 'claude-haiku-4-5-20251001',
       max_tokens: 1024,
-      thinking: { type: 'adaptive' },
       system: SYSTEM_PROMPT,
       messages: messages,
     });
@@ -98,7 +97,23 @@ const emailTransporter = (process.env.GMAIL_USER && process.env.GMAIL_PASS)
 
 if (!emailTransporter) {
   console.warn('GMAIL_USER or GMAIL_PASS not set — contact form emails will not send.');
+} else {
+  emailTransporter.verify((err) => {
+    if (err) {
+      console.error('Email transporter verify FAILED:', err.code, err.message);
+    } else {
+      console.log('Email transporter ready — SMTP connection OK');
+    }
+  });
 }
+
+app.get('/api/status', (req, res) => {
+  res.json({
+    emailConfigured: !!emailTransporter,
+    gmailUser: process.env.GMAIL_USER ? process.env.GMAIL_USER.replace(/(?<=.{3}).(?=.*@)/g, '*') : null,
+    anthropicConfigured: !!process.env.ANTHROPIC_API_KEY,
+  });
+});
 
 app.post('/api/contact', async (req, res) => {
   const { name, email, company, message } = req.body;

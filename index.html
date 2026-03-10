@@ -2918,16 +2918,20 @@
           signal: controller.signal,
         });
         clearTimeout(timeout);
+        const json = await res.json().catch(() => ({}));
         if (res.ok) {
           status.textContent = "Thanks! We'll be in touch shortly.";
           status.style.color = '#00ff41';
           status.style.display = 'block';
           this.reset();
         } else {
-          throw new Error('Server error');
+          const detail = json.code ? ` (${json.code})` : '';
+          status.innerHTML = `Something went wrong${detail}. Email us at <a href="mailto:admin@globalarcai.com" style="color:#00ff41">admin@globalarcai.com</a>`;
+          status.style.color = '#ff4444';
+          status.style.display = 'block';
         }
       } catch (err) {
-        status.innerHTML = 'Something went wrong. Email us directly at <a href="mailto:admin@globalarcai.com" style="color:#00ff41">admin@globalarcai.com</a>';
+        status.innerHTML = 'Could not reach the server. Email us at <a href="mailto:admin@globalarcai.com" style="color:#00ff41">admin@globalarcai.com</a>';
         status.style.color = '#ff4444';
         status.style.display = 'block';
       }
