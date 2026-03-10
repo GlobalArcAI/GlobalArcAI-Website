@@ -1307,7 +1307,7 @@
     .intro-label {
       font-family: var(--fe);
       font-size: 0.65em;
-      color: rgba(0,255,65,0.55);
+      color: rgba(0,255,65,0.9);
       text-transform: uppercase;
       letter-spacing: 0.25em;
       margin-bottom: 0;
@@ -2324,12 +2324,12 @@
       );
       scene.add(globeInner);
 
-      /* ── Slow rotation ── */
+      /* ── Globe spin (Y axis only, slight axial tilt like Earth) ── */
+      globe.rotation.x = 0.4;
+      globeInner.rotation.x = 0.4;
       function animate() {
-        globe.rotation.x     += 0.0025;
         globe.rotation.y     += 0.005;
-        globe.rotation.z     += 0.001;
-        globeInner.rotation.copy(globe.rotation);
+        globeInner.rotation.y = globe.rotation.y;
         renderer.render(scene, camera);
         requestAnimationFrame(animate);
       }
