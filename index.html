@@ -1567,9 +1567,9 @@
 
       /* Nav */
       .nav-links { display: none; }
-      #nav-hamburger { display: flex; }
-      #nav { padding: 0.6em 1.2em; }
-      .nav-logo img { height: 160px !important; max-height: 160px !important; max-width: 320px !important; }
+      #nav-hamburger { display: flex; position: absolute; right: 1.2em; top: 50%; transform: translateY(-50%); }
+      #nav { padding: 0.6em 1.2em; justify-content: center; position: relative; }
+      .nav-logo img { height: 90px !important; max-height: 90px !important; max-width: 240px !important; }
 
       /* Hero */
       .hero { padding: 1.5em; }
@@ -2927,7 +2927,7 @@
           throw new Error('Server error');
         }
       } catch (err) {
-        status.textContent = 'Something went wrong. Please email us directly at admin@globalarcai.com';
+        status.innerHTML = 'Something went wrong. Email us directly at <a href="mailto:admin@globalarcai.com" style="color:#00ff41">admin@globalarcai.com</a>';
         status.style.color = '#ff4444';
         status.style.display = 'block';
       }

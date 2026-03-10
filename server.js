@@ -80,6 +80,26 @@ app.post('/api/chat', async (req, res) => {
   }
 });
 
+const emailTransporter = (process.env.GMAIL_USER && process.env.GMAIL_PASS)
+  ? nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 587,
+      secure: false,
+      auth: {
+        user: process.env.GMAIL_USER,
+        pass: process.env.GMAIL_PASS,
+      },
+      tls: { rejectUnauthorized: false },
+      connectionTimeout: 15000,
+      greetingTimeout: 15000,
+      socketTimeout: 20000,
+    })
+  : null;
+
+if (!emailTransporter) {
+  console.warn('GMAIL_USER or GMAIL_PASS not set — contact form emails will not send.');
+}
+
 app.post('/api/contact', async (req, res) => {
   const { name, email, company, message } = req.body;
 
@@ -87,16 +107,10 @@ app.post('/api/contact', async (req, res) => {
     return res.status(400).json({ error: 'Missing required fields' });
   }
 
-  const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: process.env.GMAIL_USER,
-      pass: process.env.GMAIL_PASS,
-    },
-    connectionTimeout: 10000,
-    greetingTimeout: 10000,
-    socketTimeout: 15000,
-  });
+  if (!emailTransporter) {
+    console.error('Contact form submitted but email transporter not configured');
+    return res.status(500).json({ error: 'Email not configured on server' });
+  }
 
   const mailOptions = {
     from: `"Global Arc AI Website" <${process.env.GMAIL_USER}>`,
@@ -114,11 +128,11 @@ app.post('/api/contact', async (req, res) => {
   };
 
   try {
-    await transporter.sendMail(mailOptions);
+    await emailTransporter.sendMail(mailOptions);
     res.json({ success: true });
   } catch (err) {
-    console.error('Email error:', err.message);
-    res.status(500).json({ error: 'Failed to send email' });
+    console.error('Email send error:', err.code, err.message);
+    res.status(500).json({ error: 'Failed to send email', code: err.code });
   }
 });
 
