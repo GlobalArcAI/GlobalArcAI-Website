@@ -1,7 +1,6 @@
 require('dotenv').config();
 const express = require('express');
 const Anthropic = require('@anthropic-ai/sdk');
-const nodemailer = require('nodemailer');
 const path = require('path');
 
 const app = express();
@@ -79,38 +78,15 @@ app.post('/api/chat', async (req, res) => {
   }
 });
 
-const emailTransporter = (process.env.GMAIL_USER && process.env.GMAIL_PASS)
-  ? nodemailer.createTransport({
-      host: 'smtp.gmail.com',
-      port: 587,
-      secure: false,
-      auth: {
-        user: process.env.GMAIL_USER,
-        pass: process.env.GMAIL_PASS,
-      },
-      tls: { rejectUnauthorized: false },
-      connectionTimeout: 15000,
-      greetingTimeout: 15000,
-      socketTimeout: 20000,
-    })
-  : null;
-
-if (!emailTransporter) {
-  console.warn('GMAIL_USER or GMAIL_PASS not set — contact form emails will not send.');
+if (!process.env.APPS_SCRIPT_URL) {
+  console.warn('APPS_SCRIPT_URL not set — contact form emails will not send.');
 } else {
-  emailTransporter.verify((err) => {
-    if (err) {
-      console.error('Email transporter verify FAILED:', err.code, err.message);
-    } else {
-      console.log('Email transporter ready — SMTP connection OK');
-    }
-  });
+  console.log('Apps Script webhook configured.');
 }
 
 app.get('/api/status', (req, res) => {
   res.json({
-    emailConfigured: !!emailTransporter,
-    gmailUser: process.env.GMAIL_USER ? process.env.GMAIL_USER.replace(/(?<=.{3}).(?=.*@)/g, '*') : null,
+    emailConfigured: !!process.env.APPS_SCRIPT_URL,
     anthropicConfigured: !!process.env.ANTHROPIC_API_KEY,
   });
 });
@@ -122,32 +98,27 @@ app.post('/api/contact', async (req, res) => {
     return res.status(400).json({ error: 'Missing required fields' });
   }
 
-  if (!emailTransporter) {
-    console.error('Contact form submitted but email transporter not configured');
+  if (!process.env.APPS_SCRIPT_URL) {
     return res.status(500).json({ error: 'Email not configured on server' });
   }
 
-  const mailOptions = {
-    from: `"Global Arc AI Website" <${process.env.GMAIL_USER}>`,
-    to: 'admin@globalarcai.com',
-    replyTo: email,
-    subject: `New enquiry from ${name}`,
-    html: `
-      <h2>New Website Enquiry</h2>
-      <p><strong>Name:</strong> ${name}</p>
-      <p><strong>Email:</strong> ${email}</p>
-      <p><strong>Company:</strong> ${company || 'Not provided'}</p>
-      <p><strong>Message:</strong></p>
-      <p>${message.replace(/\n/g, '<br>')}</p>
-    `,
-  };
-
   try {
-    await emailTransporter.sendMail(mailOptions);
+    const response = await fetch(process.env.APPS_SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, company, message }),
+      redirect: 'follow',
+    });
+
+    if (!response.ok) {
+      console.error('Apps Script error:', response.status);
+      return res.status(500).json({ error: 'Failed to send email', code: response.status });
+    }
+
     res.json({ success: true });
   } catch (err) {
-    console.error('Email send error:', err.code, err.message);
-    res.status(500).json({ error: 'Failed to send email', code: err.code });
+    console.error('Email send error:', err.message);
+    res.status(500).json({ error: 'Failed to send email' });
   }
 });
 
