@@ -2311,25 +2311,25 @@
       var starMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.45, transparent: true, opacity: 0.75 });
       scene.add(new THREE.Points(starGeo, starMat));
 
-      /* ── Torus (wireframe outer) ── */
-      var torusGeo  = new THREE.TorusGeometry(9, 3.2, 22, 120);
-      var torusMat  = new THREE.MeshBasicMaterial({ color: 0x00ff41, wireframe: true, transparent: true, opacity: 0.28 });
-      var torus     = new THREE.Mesh(torusGeo, torusMat);
-      scene.add(torus);
+      /* ── Globe (wireframe outer) ── */
+      var globeGeo  = new THREE.SphereGeometry(10, 36, 18);
+      var globeMat  = new THREE.MeshBasicMaterial({ color: 0x00ff41, wireframe: true, transparent: true, opacity: 0.28 });
+      var globe     = new THREE.Mesh(globeGeo, globeMat);
+      scene.add(globe);
 
-      /* ── Torus (solid inner fill for depth) ── */
-      var torusInner = new THREE.Mesh(
-        new THREE.TorusGeometry(9, 3.2, 22, 120),
+      /* ── Globe (solid inner fill for depth) ── */
+      var globeInner = new THREE.Mesh(
+        new THREE.SphereGeometry(10, 36, 18),
         new THREE.MeshBasicMaterial({ color: 0x002208, transparent: true, opacity: 0.55 })
       );
-      scene.add(torusInner);
+      scene.add(globeInner);
 
       /* ── Slow rotation ── */
       function animate() {
-        torus.rotation.x     += 0.0025;
-        torus.rotation.y     += 0.005;
-        torus.rotation.z     += 0.001;
-        torusInner.rotation.copy(torus.rotation);
+        globe.rotation.x     += 0.0025;
+        globe.rotation.y     += 0.005;
+        globe.rotation.z     += 0.001;
+        globeInner.rotation.copy(globe.rotation);
         renderer.render(scene, camera);
         requestAnimationFrame(animate);
       }
