@@ -264,9 +264,14 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: space-between;
       max-width: 960px;
+      width: 100%;
+      min-height: 85vh;
       padding: 2em;
     }
+    .hero-top { display: flex; flex-direction: column; align-items: center; }
+    .hero-bottom { display: flex; flex-direction: column; align-items: center; padding-bottom: 2em; }
     .hero-eyebrow {
       font-family: var(--fe);
       font-size: 0.72em;
@@ -297,14 +302,6 @@
       display: inline-block;
       transition: opacity 0.35s ease, transform 0.35s ease;
     }
-    .hero-sub-band {
-      background: var(--black);
-      padding: 3em 2em 4em;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-    }
     .hero-sub {
       font-family: var(--fe);
       font-size: 1.1em;
@@ -313,6 +310,7 @@
       line-height: 1.7;
       letter-spacing: 0.03em;
       margin-bottom: 1.8em;
+      text-align: center;
     }
     .hero-cta-link {
       display: inline-flex;
@@ -1753,19 +1751,19 @@
     <canvas id="hero-canvas"></canvas>
     <div class="hero-overlay"></div>
     <div class="hero-content">
-      <p class="hero-eyebrow">BESPOKE AI AUTOMATION</p>
-      <div class="hero-headline-wrap">
-        <div class="hero-line"><span class="word">YOUR BUSINESS,</span></div>
-        <div class="hero-line hero-line-cycle"><span class="hero-cycler" id="hero-cycler">AUTOMATED.</span></div>
+      <div class="hero-top">
+        <p class="hero-eyebrow">BESPOKE AI AUTOMATION</p>
+        <div class="hero-headline-wrap">
+          <div class="hero-line"><span class="word">YOUR BUSINESS,</span></div>
+          <div class="hero-line hero-line-cycle"><span class="hero-cycler" id="hero-cycler">AUTOMATED.</span></div>
+        </div>
+      </div>
+      <div class="hero-bottom">
+        <p class="hero-sub">Intelligent AI systems built around how you work — eliminating the repetitive, accelerating growth, and running 24/7 without you lifting a finger.</p>
+        <a href="#contact" class="hero-cta-link">Get started →</a>
       </div>
     </div>
   </section>
-
-  <!-- HERO SUB + CTA — below the globe -->
-  <div class="hero-sub-band">
-    <p class="hero-sub">Intelligent AI systems built around how you work — eliminating the repetitive, accelerating growth, and running 24/7 without you lifting a finger.</p>
-    <a href="#contact" class="hero-cta-link">Get started →</a>
-  </div>
 
   <!-- MARQUEE -->
   <div class="marquee-wrap">
