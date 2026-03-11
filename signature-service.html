@@ -26,12 +26,17 @@
     #nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 500;
       display: flex; align-items: center; justify-content: space-between;
-      padding: 4px 32px;
+      padding: 0.3em 2em;
+      background: rgba(0, 0, 0, 0.88);
+      border-bottom: 1px solid rgba(0, 255, 65, 0.22);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       pointer-events: none;
     }
     #nav > * { pointer-events: auto; }
     .dropdown { pointer-events: auto; }
-    .nav-logo { display: flex; align-items: center; text-decoration: none; }
+    .nav-logo { display: flex; align-items: center; text-decoration: none; overflow: hidden; height: 80px; max-width: 240px; }
+    .nav-logo img { height: 80px !important; max-height: 80px !important; width: auto !important; max-width: none !important; object-fit: contain !important; }
     .nav-links { display: flex; gap: 24px; align-items: center; list-style: none; }
     .nav-links a { font-family: var(--fe); font-size: 9px; color: rgba(255,255,255,0.55); text-decoration: none; text-transform: uppercase; letter-spacing: 0.08em; white-space: nowrap; transition: color 0.2s; }
     .nav-links a:hover { color: #fff; }
@@ -48,17 +53,16 @@
     .dropdown-inner a { display: flex; align-items: center; gap: 9px; padding: 9px 14px; font-family: var(--fe); font-size: 8px; color: rgba(255,255,255,0.55); text-decoration: none; text-transform: uppercase; letter-spacing: 0.08em; transition: color 0.15s, background 0.15s; border-radius: 4px; margin: 1px 4px; }
     .dropdown-inner a:hover { color: #fff; background: rgba(255,255,255,0.05); }
     .dd-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
-    #nav-hamburger { display: none; flex-direction: column; gap: 4px; background: none; border: none; cursor: pointer; padding: 6px; z-index: 600; }
-    #nav-hamburger span { display: block; width: 20px; height: 2px; background: #fff; border-radius: 2px; transition: transform 0.25s, opacity 0.25s; }
-    #nav-hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+    #nav-hamburger { display: none; flex-direction: column; gap: 0.32em; background: none; border: none; cursor: pointer; padding: 0.4em; z-index: 600; }
+    #nav-hamburger span { display: block; width: 1.6em; height: 2px; background: #fff; border-radius: 2px; transition: transform 0.25s, opacity 0.25s; }
+    #nav-hamburger.open span:nth-child(1) { transform: translateY(0.52em) rotate(45deg); }
     #nav-hamburger.open span:nth-child(2) { opacity: 0; }
-    #nav-hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
-    #mobile-nav { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 490; backdrop-filter: blur(4px); }
-    #mobile-nav.open { display: flex; align-items: flex-start; justify-content: flex-end; }
-    #mobile-nav-inner { background: #111; width: 75vw; max-width: 280px; min-height: 100%; padding: 80px 24px 32px; display: flex; flex-direction: column; gap: 3px; border-left: 1px solid rgba(255,255,255,0.08); }
-    #mobile-nav-inner a { font-family: var(--fe); font-size: 13px; color: rgba(255,255,255,0.65); text-decoration: none; text-transform: uppercase; letter-spacing: 0.08em; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.06); transition: color 0.2s; }
-    #mobile-nav-inner a:hover { color: #fff; }
-    .mobile-nav-cta { margin-top: 16px; background: var(--green) !important; color: #000 !important; border-radius: 32px; padding: 12px 24px !important; text-align: center; border: none !important; }
+    #nav-hamburger.open span:nth-child(3) { transform: translateY(-0.52em) rotate(-45deg); }
+    #mobile-menu-bar { display: none; position: fixed; left: 0; right: 0; top: 88px; z-index: 490; background: rgba(0, 0, 0, 0.97); border-bottom: 1px solid rgba(0, 255, 65, 0.22); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); flex-direction: row; align-items: center; justify-content: space-around; flex-wrap: wrap; gap: 0.3em; padding: 0.6em 0.5em; }
+    #mobile-menu-bar.open { display: flex; }
+    #mobile-menu-bar a { font-family: var(--fe); font-size: 0.65em; color: rgba(255, 255, 255, 0.75); text-decoration: none; text-transform: uppercase; letter-spacing: 0.07em; padding: 0.45em 0.7em; white-space: nowrap; transition: color 0.2s; }
+    #mobile-menu-bar a:active, #mobile-menu-bar a:hover { color: #fff; }
+    #mobile-menu-bar .mob-cta { background: #ff6436; color: #000 !important; border-radius: 2em; padding: 0.45em 1em; }
 
     /* ── PAGE HERO ── */
     .page-hero {
@@ -201,11 +205,12 @@
     footer a:hover { color: var(--green); }
 
     @media (max-width: 768px) {
-      #nav { padding: 0.8rem 1.2rem; }
       .nav-links { display: none; }
+      .nav-cta { display: none; }
       #nav-hamburger { display: flex; }
-      #nav { padding: 6px 19px; }
-      .nav-logo img { height: 100px !important; max-height: 100px !important; max-width: 280px !important; }
+      #nav { padding: 0.4em 1em; }
+      .nav-logo { height: 65px; max-width: 180px; }
+      .nav-logo img { height: 65px !important; max-height: 65px !important; }
       .page-hero { padding: 7rem 1.5rem 3rem; }
       .anchor-nav { padding: 1rem 1.5rem; top: 108px; }
       .detail-section { grid-template-columns: 1fr; gap: 2.5rem; padding: 4rem 1.5rem; }
@@ -243,19 +248,13 @@
       <span></span><span></span><span></span>
     </button>
   </nav>
-  <!-- Mobile nav overlay -->
-  <div id="mobile-nav" onclick="toggleMobileNav()">
-    <div id="mobile-nav-inner" onclick="event.stopPropagation()">
-      <a href="#" onclick="toggleMobileServices(event)" style="display:flex;justify-content:space-between;align-items:center;">Services <span id="mob-svc-arrow" style="font-size:1.2em;transition:transform 0.2s;">›</span></a>
-      <div id="mob-svc-sub" style="display:none;margin-top:0.3em;">
-        <a href="signature-service.html" onclick="toggleMobileNav()" style="padding-left:2em;border-left:3px solid rgba(0,255,65,0.4);margin-bottom:0.2em;display:block;">AI Assistant</a>
-        <a href="bespoke-builds.html" onclick="toggleMobileNav()" style="padding-left:2em;border-left:3px solid rgba(0,255,65,0.4);margin-bottom:0.2em;display:block;">Bespoke Builds</a>
-        <a href="ai-platform.html" onclick="toggleMobileNav()" style="padding-left:2em;border-left:3px solid rgba(0,255,65,0.4);display:block;">AI Platform</a>
-      </div>
-      <a href="process.html" onclick="toggleMobileNav()">Process</a>
-      <a href="about.html" onclick="toggleMobileNav()">About</a>
-      <a href="index.html#contact" class="mobile-nav-cta" onclick="toggleMobileNav()">Get started</a>
-    </div>
+  <div id="mobile-menu-bar">
+    <a href="signature-service.html" onclick="closeMenu()">AI Assistant</a>
+    <a href="bespoke-builds.html" onclick="closeMenu()">Bespoke Builds</a>
+    <a href="ai-platform.html" onclick="closeMenu()">AI Platform</a>
+    <a href="process.html" onclick="closeMenu()">Process</a>
+    <a href="about.html" onclick="closeMenu()">About</a>
+    <a href="index.html#contact" class="mob-cta" onclick="closeMenu()">Get started</a>
   </div>
 
   <!-- PAGE HERO -->
@@ -500,16 +499,12 @@
 
   <script>
     function toggleMobileNav() {
-      document.getElementById('mobile-nav').classList.toggle('open');
+      document.getElementById('mobile-menu-bar').classList.toggle('open');
       document.getElementById('nav-hamburger').classList.toggle('open');
     }
-    function toggleMobileServices(e) {
-      e.preventDefault();
-      var sub = document.getElementById('mob-svc-sub');
-      var arrow = document.getElementById('mob-svc-arrow');
-      var open = sub.style.display !== 'none';
-      sub.style.display = open ? 'none' : 'block';
-      arrow.style.transform = open ? '' : 'rotate(90deg)';
+    function closeMenu() {
+      document.getElementById('mobile-menu-bar').classList.remove('open');
+      document.getElementById('nav-hamburger').classList.remove('open');
     }
   </script>
 

@@ -102,12 +102,12 @@
       gap: 0.6em;
       text-decoration: none;
       overflow: hidden;
-      height: 46px;
-      max-width: 200px;
+      height: 80px;
+      max-width: 280px;
     }
     .nav-logo img {
-      height: 46px !important;
-      max-height: 46px !important;
+      height: 80px !important;
+      max-height: 80px !important;
       width: auto !important;
       max-width: none !important;
       object-fit: contain !important;
@@ -1599,12 +1599,12 @@
       #nav { padding: 0.4em 1em; }
       .nav-logo {
         overflow: hidden;
-        height: 40px;
-        max-width: 180px;
+        height: 65px;
+        max-width: 220px;
       }
       .nav-logo img {
-        height: 40px !important;
-        max-height: 40px !important;
+        height: 65px !important;
+        max-height: 65px !important;
         width: auto !important;
         max-width: none !important;
         object-fit: contain !important;
@@ -2366,7 +2366,7 @@
       globe.rotation.x = 0.4;
       globeInner.rotation.x = 0.4;
       function animate() {
-        globe.rotation.y     += 0.005;
+        globe.rotation.y     += 0.002;
         globeInner.rotation.y = globe.rotation.y;
         renderer.render(scene, camera);
         requestAnimationFrame(animate);
