@@ -101,6 +101,16 @@
       align-items: center;
       gap: 0.6em;
       text-decoration: none;
+      overflow: hidden;
+      height: 46px;
+      max-width: 200px;
+    }
+    .nav-logo img {
+      height: 46px !important;
+      max-height: 46px !important;
+      width: auto !important;
+      max-width: none !important;
+      object-fit: contain !important;
     }
     .nav-logo-text {
       font-family: var(--fe);
@@ -229,7 +239,7 @@
     /* ═══ HERO ═══ */
     .hero {
       background: var(--black);
-      min-height: 100vh;
+      min-height: 120vh;
       position: relative;
       overflow: hidden;
       text-align: center;
@@ -277,7 +287,7 @@
     }
     .hero-bottom {
       position: absolute;
-      bottom: 4vh;
+      bottom: 2vh;
       left: 50%;
       transform: translateX(-50%);
       display: flex;
@@ -1534,46 +1544,43 @@
     #nav-hamburger.open span:nth-child(2) { opacity: 0; }
     #nav-hamburger.open span:nth-child(3) { transform: translateY(-0.52em) rotate(-45deg); }
 
-    #mobile-nav {
+    /* ── Mobile horizontal menu bar ── */
+    #mobile-menu-bar {
       display: none;
       position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.6);
+      left: 0; right: 0;
+      top: 54px;
       z-index: 490;
-      backdrop-filter: blur(4px);
+      background: rgba(0, 0, 0, 0.97);
+      border-bottom: 1px solid rgba(0, 255, 65, 0.22);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 0.3em;
+      padding: 0.6em 0.5em;
     }
-    #mobile-nav.open { display: flex; align-items: flex-start; justify-content: flex-end; }
-    #mobile-nav-inner {
-      background: #111;
-      width: 75vw;
-      max-width: 18em;
-      min-height: 100%;
-      padding: 5em 1.5em 2em;
-      display: flex;
-      flex-direction: column;
-      gap: 0.2em;
-      border-left: 1px solid rgba(255,255,255,0.08);
-    }
-    #mobile-nav-inner a {
+    #mobile-menu-bar.open { display: flex; }
+    #mobile-menu-bar a {
       font-family: var(--fe);
-      font-size: 0.85em;
-      color: rgba(255,255,255,0.65);
+      font-size: 0.65em;
+      color: rgba(255, 255, 255, 0.75);
       text-decoration: none;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
-      padding: 0.75em 0;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
+      letter-spacing: 0.07em;
+      padding: 0.45em 0.7em;
+      white-space: nowrap;
       transition: color 0.2s;
     }
-    #mobile-nav-inner a:hover { color: #fff; }
-    .mobile-nav-cta {
-      margin-top: 1em;
-      background: var(--orange) !important;
+    #mobile-menu-bar a:active,
+    #mobile-menu-bar a:hover { color: #fff; }
+    #mobile-menu-bar .mob-cta {
+      background: var(--orange);
       color: #000 !important;
       border-radius: 2em;
-      padding: 0.75em 1.5em !important;
-      text-align: center;
-      border: none !important;
+      padding: 0.45em 1em;
     }
 
     /* ═══ RESPONSIVE BREAKPOINTS ═══ */
@@ -1589,28 +1596,23 @@
       .nav-links { display: none; }
       .nav-cta { display: none; }
       #nav-hamburger { display: flex; }
-      #nav { padding: 0.5em 1em; }
-      /* Crop logo to fixed window so only the logo text shows, flush left */
+      #nav { padding: 0.4em 1em; }
       .nav-logo {
         overflow: hidden;
-        width: 140px;
-        height: 52px;
-        flex-shrink: 0;
+        height: 40px;
+        max-width: 180px;
       }
       .nav-logo img {
-        height: 52px !important;
-        max-height: 52px !important;
-        width: 280px !important;
+        height: 40px !important;
+        max-height: 40px !important;
+        width: auto !important;
         max-width: none !important;
-        object-fit: cover !important;
-        object-position: center center !important;
-        margin-left: -70px;
-        display: block;
+        object-fit: contain !important;
+        margin-left: 0;
       }
 
-
-      /* Hero */
-      .hero { padding: 1.5em; }
+      /* Hero — keep 100vh on mobile */
+      .hero { padding: 1.5em; min-height: 100vh; }
       .hero-line { font-size: 4.8em; }
       .hero-sub { font-size: 0.95em; }
       .hero-cta-link { align-self: center; justify-content: center; }
@@ -1763,19 +1765,14 @@
       <span></span><span></span><span></span>
     </button>
   </nav>
-  <!-- Mobile nav overlay -->
-  <div id="mobile-nav" onclick="toggleMobileNav()">
-    <div id="mobile-nav-inner" onclick="event.stopPropagation()">
-      <a href="#" onclick="toggleMobileServices(event)" style="display:flex;justify-content:space-between;align-items:center;">Services <span id="mob-svc-arrow" style="font-size:1.2em;transition:transform 0.2s;">›</span></a>
-      <div id="mob-svc-sub" style="display:none;margin-top:0.3em;">
-        <a href="signature-service.html" onclick="toggleMobileNav()" style="padding-left:2em;border-left:3px solid rgba(0,255,65,0.4);margin-bottom:0.2em;display:block;">AI Assistant</a>
-        <a href="bespoke-builds.html" onclick="toggleMobileNav()" style="padding-left:2em;border-left:3px solid rgba(0,255,65,0.4);margin-bottom:0.2em;display:block;">Bespoke Builds</a>
-        <a href="ai-platform.html" onclick="toggleMobileNav()" style="padding-left:2em;border-left:3px solid rgba(0,255,65,0.4);display:block;">AI Platform</a>
-      </div>
-      <a href="process.html" onclick="toggleMobileNav()">Process</a>
-      <a href="about.html" onclick="toggleMobileNav()">About</a>
-      <a href="#contact" class="mobile-nav-cta" onclick="toggleMobileNav()">Get started</a>
-    </div>
+  <!-- Mobile horizontal menu bar -->
+  <div id="mobile-menu-bar">
+    <a href="signature-service.html" onclick="closeMenu()">AI Assistant</a>
+    <a href="bespoke-builds.html" onclick="closeMenu()">Bespoke Builds</a>
+    <a href="ai-platform.html" onclick="closeMenu()">AI Platform</a>
+    <a href="process.html" onclick="closeMenu()">Process</a>
+    <a href="about.html" onclick="closeMenu()">About</a>
+    <a href="#contact" class="mob-cta" onclick="closeMenu()">Get started</a>
   </div>
 
   <!-- HERO -->
@@ -2905,18 +2902,12 @@
 
     // Mobile nav toggle
     function toggleMobileNav() {
-      const nav = document.getElementById('mobile-nav');
-      const btn = document.getElementById('nav-hamburger');
-      nav.classList.toggle('open');
-      btn.classList.toggle('open');
+      document.getElementById('mobile-menu-bar').classList.toggle('open');
+      document.getElementById('nav-hamburger').classList.toggle('open');
     }
-    function toggleMobileServices(e) {
-      e.preventDefault();
-      var sub   = document.getElementById('mob-svc-sub');
-      var arrow = document.getElementById('mob-svc-arrow');
-      var open  = sub.style.display !== 'none';
-      sub.style.display  = open ? 'none' : 'block';
-      arrow.style.transform = open ? '' : 'rotate(90deg)';
+    function closeMenu() {
+      document.getElementById('mobile-menu-bar').classList.remove('open');
+      document.getElementById('nav-hamburger').classList.remove('open');
     }
 
     /* ── Hero cycling headline ── */
