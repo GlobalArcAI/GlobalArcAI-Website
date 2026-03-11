@@ -264,14 +264,22 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: space-between;
       max-width: 960px;
-      width: 100%;
-      min-height: 85vh;
       padding: 2em;
     }
     .hero-top { display: flex; flex-direction: column; align-items: center; }
-    .hero-bottom { display: flex; flex-direction: column; align-items: center; padding-bottom: 2em; }
+    .hero-bottom {
+      position: absolute;
+      bottom: 4em;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 90%;
+      max-width: 560px;
+      z-index: 2;
+    }
     .hero-eyebrow {
       font-family: var(--fe);
       font-size: 0.72em;
