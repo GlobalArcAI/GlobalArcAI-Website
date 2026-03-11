@@ -266,19 +266,24 @@
       align-items: center;
       max-width: 960px;
       padding: 2em;
+      width: 100%;
+      align-self: stretch;
     }
-    .hero-top { display: flex; flex-direction: column; align-items: center; }
+    .hero-top {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
     .hero-bottom {
-      position: absolute;
-      bottom: 4em;
-      left: 50%;
-      transform: translateX(-50%);
       display: flex;
       flex-direction: column;
       align-items: center;
       width: 90%;
       max-width: 560px;
       z-index: 2;
+      padding-bottom: 3em;
     }
     .hero-eyebrow {
       font-family: var(--fe);
