@@ -1,7 +1,6 @@
 require('dotenv').config();
 const express = require('express');
 const Anthropic = require('@anthropic-ai/sdk');
-const nodemailer = require('nodemailer');
 const path = require('path');
 
 const app = express();
@@ -79,20 +78,9 @@ app.post('/api/chat', async (req, res) => {
   }
 });
 
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.GMAIL_USER,
-    pass: process.env.GMAIL_PASS,
-  },
-  connectionTimeout: 5000,
-  greetingTimeout: 5000,
-  socketTimeout: 10000,
-});
-
 app.get('/api/status', (req, res) => {
   res.json({
-    emailConfigured: !!(process.env.GMAIL_USER && process.env.GMAIL_PASS),
+    emailConfigured: !!process.env.APPS_SCRIPT_URL,
     anthropicConfigured: !!process.env.ANTHROPIC_API_KEY,
   });
 });
@@ -104,22 +92,27 @@ app.post('/api/contact', async (req, res) => {
     return res.status(400).json({ error: 'Missing required fields' });
   }
 
-  if (!process.env.GMAIL_USER || !process.env.GMAIL_PASS) {
+  if (!process.env.APPS_SCRIPT_URL) {
     return res.status(500).json({ error: 'Email not configured on server' });
   }
 
   try {
-    await transporter.sendMail({
-      from: `"Global Arc AI Website" <${process.env.GMAIL_USER}>`,
-      to: 'toby.jamieson@globalarcai.com',
-      replyTo: email,
-      subject: `New enquiry from ${name}`,
-      text: `Name: ${name}\nEmail: ${email}\nCompany: ${company || 'Not provided'}\n\nMessage:\n${message}`,
-    });
+    const params = new URLSearchParams({ name, email, company: company || '', message });
+    const url = `${process.env.APPS_SCRIPT_URL}?${params.toString()}`;
+
+    const response = await fetch(url, { method: 'GET', redirect: 'follow' });
+    const text = await response.text();
+
+    let json;
+    try { json = JSON.parse(text); } catch (_) { json = {}; }
+
+    if (!response.ok || json.error) {
+      return res.status(500).json({ error: json.error || `Error ${response.status}` });
+    }
 
     res.json({ success: true });
   } catch (err) {
-    console.error('Email send error:', err.message);
+    console.error('Contact error:', err.message);
     res.status(500).json({ error: err.message });
   }
 });
