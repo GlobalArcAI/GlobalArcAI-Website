@@ -110,8 +110,11 @@ app.post('/api/contact', async (req, res) => {
     const text = await response.text();
     console.log('Apps Script response:', response.status, text);
 
-    if (!response.ok) {
-      return res.status(500).json({ error: `Apps Script returned ${response.status}: ${text.slice(0, 200)}` });
+    let json;
+    try { json = JSON.parse(text); } catch (_) { json = {}; }
+
+    if (!response.ok || json.error) {
+      return res.status(500).json({ error: json.error || `Apps Script returned ${response.status}: ${text.slice(0, 200)}` });
     }
 
     res.json({ success: true });
