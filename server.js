@@ -111,13 +111,13 @@ app.post('/api/contact', async (req, res) => {
     console.log('Apps Script response:', response.status, text);
 
     if (!response.ok) {
-      return res.status(500).json({ error: 'Failed to send email', code: response.status });
+      return res.status(500).json({ error: `Apps Script returned ${response.status}: ${text.slice(0, 200)}` });
     }
 
     res.json({ success: true });
   } catch (err) {
     console.error('Email send error:', err.message);
-    res.status(500).json({ error: 'Failed to send email' });
+    res.status(500).json({ error: `Fetch failed: ${err.message}` });
   }
 });
 
