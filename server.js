@@ -85,6 +85,9 @@ const transporter = nodemailer.createTransport({
     user: process.env.GMAIL_USER,
     pass: process.env.GMAIL_PASS,
   },
+  connectionTimeout: 5000,
+  greetingTimeout: 5000,
+  socketTimeout: 10000,
 });
 
 app.get('/api/status', (req, res) => {
@@ -99,6 +102,10 @@ app.post('/api/contact', async (req, res) => {
 
   if (!name || !email || !message) {
     return res.status(400).json({ error: 'Missing required fields' });
+  }
+
+  if (!process.env.GMAIL_USER || !process.env.GMAIL_PASS) {
+    return res.status(500).json({ error: 'Email not configured on server' });
   }
 
   try {
