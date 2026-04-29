@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const Anthropic = require('@anthropic-ai/sdk');
+const nodemailer = require('nodemailer');
 const path = require('path');
 
 const app = express();
@@ -78,15 +79,23 @@ app.post('/api/chat', async (req, res) => {
   }
 });
 
-if (!process.env.APPS_SCRIPT_URL) {
-  console.warn('APPS_SCRIPT_URL not set — contact form emails will not send.');
+const gmailUser = process.env.GMAIL_USER;
+const gmailPass = process.env.GMAIL_PASS;
+
+if (!gmailUser || !gmailPass) {
+  console.warn('GMAIL_USER or GMAIL_PASS not set — contact form emails will not send.');
 } else {
-  console.log('Apps Script webhook configured.');
+  console.log('Gmail configured for:', gmailUser);
 }
+
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: { user: gmailUser, pass: gmailPass },
+});
 
 app.get('/api/status', (req, res) => {
   res.json({
-    emailConfigured: !!process.env.APPS_SCRIPT_URL,
+    emailConfigured: !!(gmailUser && gmailPass),
     anthropicConfigured: !!process.env.ANTHROPIC_API_KEY,
   });
 });
@@ -98,21 +107,25 @@ app.post('/api/contact', async (req, res) => {
     return res.status(400).json({ error: 'Missing required fields' });
   }
 
-  if (!process.env.APPS_SCRIPT_URL) {
+  if (!gmailUser || !gmailPass) {
     return res.status(500).json({ error: 'Email not configured on server' });
   }
 
   try {
-    const params = new URLSearchParams({ name, email, company: company || '', message });
-    const url = `${process.env.APPS_SCRIPT_URL}?${params.toString()}`;
-
-    const response = await fetch(url, { method: 'GET', redirect: 'follow' });
-    const text = await response.text();
-    console.log('Apps Script response:', response.status, text);
-
-    if (!response.ok) {
-      return res.status(500).json({ error: 'Failed to send email', code: response.status });
-    }
+    await transporter.sendMail({
+      from: `"Global Arc AI Website" <${gmailUser}>`,
+      to: 'toby.jamieson@globalarcai.com',
+      replyTo: email,
+      subject: `New enquiry from ${name}`,
+      text: [
+        `Name: ${name}`,
+        `Email: ${email}`,
+        `Company: ${company || 'Not provided'}`,
+        ``,
+        `Message:`,
+        message,
+      ].join('\n'),
+    });
 
     res.json({ success: true });
   } catch (err) {
